@@ -1,4 +1,4 @@
-package com.colaborapp.repositry;
+package com.colaborapp.repository;
 
 import com.colaborapp.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
