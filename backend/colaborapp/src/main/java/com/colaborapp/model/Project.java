@@ -20,9 +20,6 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(nullable = false, name = "USER_ID")
-    private User userId;
-    @ManyToOne
     @JoinColumn(nullable = false, name = "CATEGORY_ID")
     private Category categoryId;
     @Column(nullable = false, unique = true)
@@ -36,9 +33,9 @@ public class Project {
     private String description;
     @Column(nullable = false, name= "GOAL_AMOUNT")
     private Double goalAmount;
-    @Column(nullable = false, name= "CURRENT_AMOUNT")
+    @Column(name= "CURRENT_AMOUNT")
     private Double currentAmount = 0.0;
-    @Column(nullable = false, name= "START_DATE")
+    @Column(name= "START_DATE")
     private LocalDate startDate = now();
     @Column(nullable = false, name= "END_DATE")
     private LocalDate endDate;

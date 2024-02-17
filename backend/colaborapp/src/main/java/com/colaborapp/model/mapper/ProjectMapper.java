@@ -8,4 +8,6 @@ public interface ProjectMapper {
     Project toProjectEntity(ProjectRequestDTO projectRequestDTO);
 
     ProjectResponseDTO toProjectResponseDto(Project entity);
+
+    Project toProjectEntityForUpdate(Project existingProject, ProjectRequestDTO projectRequestDTO);
 }

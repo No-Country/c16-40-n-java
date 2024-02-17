@@ -5,16 +5,16 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public class ProjectResponseDTO {
-    private Long id;
-    private Long userId;
-    private Long categoryId;
-    private String title;
-    private String status;
-    private String image;
-    private String description;
-    private Double goalAmount;
-    private Double currentAmount;
-    private LocalDate startDate;
-    private LocalDate endDate;
-}
+public record ProjectResponseDTO (
+    Long id,
+    //private Long userId,
+    Long categoryId,
+    String title,
+    String status,
+    String image,
+    String description,
+    Double goalAmount,
+    Double currentAmount,
+    LocalDate startDate,
+    LocalDate endDate
+) {}

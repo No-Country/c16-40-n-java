@@ -1,5 +1,5 @@
 package com.colaborapp.model;
 
 public enum Status {
-    ACTIVE, FINALIZED, SUSPENDED, PENDING
+    ACTIVE, FINALIZED, INREVIEW, PENDING, DELETED
 }
