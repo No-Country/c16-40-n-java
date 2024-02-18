@@ -1,4 +1,10 @@
 package com.colaborapp.dto;
 
-public record AuthResponseDTO() {
+import lombok.Builder;
+
+@Builder
+public record AuthResponseDTO(
+        String email,
+        String token
+) {
 }
