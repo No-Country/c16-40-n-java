@@ -1,7 +1,8 @@
 package com.colaborapp.controller;
 
-import com.colaborapp.dto.UserRequestDTO;
-import com.colaborapp.service.UserService;
+import com.colaborapp.dto.AuthRequestDTO;
+import com.colaborapp.dto.AuthResponseDTO;
+import com.colaborapp.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/users")
+@RequestMapping(value = "/api/auth")
 @RequiredArgsConstructor
-public class UserController {
-    private final UserService userService;
+public class AuthController {
+    private final AuthService authService;
 
-    @PostMapping(value = "/registration")
-    public ResponseEntity<Void> registration(@Valid @RequestBody UserRequestDTO request) {
-        userService.userRegistration(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @PostMapping(value = "/login")
+    public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody AuthRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.authentication(request));
     }
 }

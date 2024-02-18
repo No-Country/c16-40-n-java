@@ -9,6 +9,7 @@ public record UserRequestDTO(
         @NotEmpty String name,
         @NotEmpty String lastName,
         @NotEmpty @Email String email,
-        @NotEmpty String password
+        @NotEmpty String password,
+        String phoneNumber
 ) {
 }
