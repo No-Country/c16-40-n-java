@@ -73,8 +73,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseDTO createProject(ProjectRequestDTO projectRequestDTO) {
-        Project newProject = projectRepository.save(projectMapper.toProjectEntity(projectRequestDTO));
+    public ProjectResponseDTO createProject(String userId, ProjectRequestDTO projectRequestDTO) {
+        Project newProject = projectRepository.save(projectMapper.toProjectEntity(userId,projectRequestDTO));
         return projectMapper.toProjectResponseDto(newProject);
     }
 }

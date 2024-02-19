@@ -5,7 +5,7 @@ import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.model.Project;
 
 public interface ProjectMapper {
-    Project toProjectEntity(ProjectRequestDTO projectRequestDTO);
+    Project toProjectEntity(String userId, ProjectRequestDTO projectRequestDTO);
 
     ProjectResponseDTO toProjectResponseDto(Project entity);
 

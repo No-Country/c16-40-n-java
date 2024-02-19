@@ -1,5 +1,7 @@
 package com.colaborapp.dto;
 
+import com.colaborapp.model.Category;
+import com.colaborapp.model.User;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -7,7 +9,7 @@ import java.time.LocalDate;
 @Builder
 public record ProjectResponseDTO (
     Long id,
-    //private Long userId,
+    Long userId,
     Long categoryId,
     String title,
     String status,

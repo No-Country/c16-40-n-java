@@ -1,7 +1,7 @@
 package com.colaborapp.repository;
 
 import com.colaborapp.model.Category;
-import org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

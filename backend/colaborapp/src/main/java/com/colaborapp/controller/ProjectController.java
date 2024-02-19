@@ -2,8 +2,10 @@ package com.colaborapp.controller;
 
 import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
+import com.colaborapp.service.AuthService;
 import com.colaborapp.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.*;
@@ -16,9 +18,11 @@ import java.util.Optional;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final AuthService authService;
     @Autowired
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, AuthService authService) {
         this.projectService = projectService;
+        this.authService = authService;
     }
 
     @GetMapping()
@@ -33,8 +37,10 @@ public class ProjectController {
     }
 
     @PostMapping()
-    public ResponseEntity<ProjectResponseDTO> createProject(@RequestBody ProjectRequestDTO projectRequestDTO) {
-        ProjectResponseDTO projectResponseDTO = projectService.createProject(projectRequestDTO);
+    public ResponseEntity<ProjectResponseDTO> createProject(@RequestBody ProjectRequestDTO projectRequestDTO,
+                                                            @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
+        String userId = authService.getCurrentUserFromToken(token);
+        ProjectResponseDTO projectResponseDTO = projectService.createProject(userId,projectRequestDTO);
         return ResponseEntity.status(OK).body(projectResponseDTO);
     }
     @DeleteMapping("/{id}")

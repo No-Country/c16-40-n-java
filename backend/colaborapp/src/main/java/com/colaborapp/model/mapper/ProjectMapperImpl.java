@@ -5,7 +5,9 @@ import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.model.Category;
 import com.colaborapp.model.Project;
 import com.colaborapp.model.Status;
+import com.colaborapp.model.User;
 import com.colaborapp.repository.CategoryRepository;
+import com.colaborapp.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,12 +17,22 @@ import java.time.LocalDate;
 
 @Component
 public class ProjectMapperImpl implements ProjectMapper {
+    private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    public ProjectMapperImpl(CategoryRepository categoryRepository, UserRepository userRepository) {
+        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
+    }
+
+
+
     @Override
-    public Project toProjectEntity(ProjectRequestDTO projectRequestDTO) {
+    public Project toProjectEntity(String userId, ProjectRequestDTO projectRequestDTO) {
         Assert.notNull(projectRequestDTO, "ProjectRequestDTO object must not be null.");
 
+        User user = userRepository.findByEmail(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
         Category category = categoryRepository.findById(projectRequestDTO.categoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + projectRequestDTO.categoryId()));
 
@@ -29,6 +41,7 @@ public class ProjectMapperImpl implements ProjectMapper {
         LocalDate startDate = projectRequestDTO.startDate() != null ? projectRequestDTO.startDate() : LocalDate.now();
 
         return Project.builder()
+                .userId(user)
                 .categoryId(category)
                 .status(status)
                 .title(projectRequestDTO.title())
@@ -45,13 +58,10 @@ public class ProjectMapperImpl implements ProjectMapper {
     public ProjectResponseDTO toProjectResponseDto(Project entity) {
         Assert.notNull(entity, "Entity object must not be null.");
 
-        Category category = categoryRepository.findById(entity.getCategoryId().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + entity.getCategoryId()));
-
         return ProjectResponseDTO.builder()
                 .id(entity.getId())
-                // .userId(entity.getUserId())
-                .categoryId(category.getId())
+                .userId(entity.getUserId().getId())
+                .categoryId(entity.getCategoryId().getId())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .image(entity.getImage())

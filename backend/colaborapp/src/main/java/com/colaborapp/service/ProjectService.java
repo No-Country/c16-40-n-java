@@ -15,6 +15,5 @@ public interface ProjectService {
 
     void deleteProject(Long projectId);
 
-    ProjectResponseDTO createProject(ProjectRequestDTO projectRequestDTO);
-
+    ProjectResponseDTO createProject(String userId, ProjectRequestDTO projectRequestDTO);
 }

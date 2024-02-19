@@ -1,5 +1,7 @@
 package com.colaborapp.dto;
 
+import com.colaborapp.model.Category;
+import com.colaborapp.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
@@ -9,6 +11,7 @@ import java.time.LocalDate;
 @Builder
 public record ProjectRequestDTO (
     @NotNull(message = "Category ID is required") Long categoryId,
+    //@NotNull(message = "User ID is required") User userId,
     @NotBlank(message = "Title is mandatory") String title,
     String status,
     @NotBlank(message = "Image URL is mandatory") String image,

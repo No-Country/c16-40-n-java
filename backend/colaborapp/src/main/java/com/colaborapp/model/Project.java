@@ -20,6 +20,9 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(nullable = false, name = "USER_ID")
+    private User userId;
+    @ManyToOne
     @JoinColumn(nullable = false, name = "CATEGORY_ID")
     private Category categoryId;
     @Column(nullable = false, unique = true)
