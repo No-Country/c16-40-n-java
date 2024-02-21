@@ -4,6 +4,7 @@ import com.colaborapp.dto.UserRequestDTO;
 import com.colaborapp.model.Role;
 import com.colaborapp.model.RoleType;
 import com.colaborapp.model.User;
+import com.colaborapp.model.exception.RequiredObjectException;
 import com.colaborapp.model.mapper.UserMapper;
 import com.colaborapp.repository.UserRepository;
 import com.colaborapp.service.RoleService;
@@ -13,7 +14,6 @@ import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void userRegistration(UserRequestDTO registrationRequest) {
         if (Objects.isNull(registrationRequest)) {
-            throw new RequestRejectedException("User registration denied. Must provide valid data.");
+            throw new RequiredObjectException("User registration denied. Must provide valid data.");
         }
         if (userRepository.existsByEmail(registrationRequest.email())) {
             throw new EntityExistsException("Error: Try with a different email.");
