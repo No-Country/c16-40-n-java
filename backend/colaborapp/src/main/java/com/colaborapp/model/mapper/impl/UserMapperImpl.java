@@ -1,7 +1,8 @@
-package com.colaborapp.model.mapper;
+package com.colaborapp.model.mapper.impl;
 
 import com.colaborapp.dto.UserRequestDTO;
 import com.colaborapp.model.User;
+import com.colaborapp.model.mapper.UserMapper;
 import org.springframework.stereotype.Component;
 
 @Component

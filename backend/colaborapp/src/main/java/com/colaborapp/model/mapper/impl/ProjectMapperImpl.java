@@ -1,9 +1,10 @@
-package com.colaborapp.model.mapper;
+package com.colaborapp.model.mapper.impl;
 
 import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.model.Project;
 import com.colaborapp.model.Status;
+import com.colaborapp.model.mapper.ProjectMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 

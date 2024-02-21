@@ -1,4 +1,4 @@
-package com.colaborapp.model.mapper;
+package com.colaborapp.model.mapper.impl;
 
 import org.springframework.stereotype.Component;
 

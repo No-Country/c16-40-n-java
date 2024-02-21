@@ -1,5 +1,6 @@
-package com.colaborapp.model.mapper;
+package com.colaborapp.model.mapper.impl;
 
+import com.colaborapp.model.mapper.DonationMapper;
 import org.springframework.stereotype.Component;
 
 @Component
