@@ -4,6 +4,7 @@ import com.colaborapp.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +26,9 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers("/api/auth/login", "/api/users/registration")
+                                .requestMatchers(HttpMethod.GET, "/api/projects","/api/projects/{id}")
+                                .permitAll()
+                                .requestMatchers("/api/auth/login", "/api/users/registration", "/api/projects","/api/projects/{id}")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())

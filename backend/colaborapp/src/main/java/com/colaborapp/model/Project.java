@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+import static java.time.LocalDate.now;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,11 +19,13 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, name = "USER_ID")
-    private Long userId;
-    @Column(nullable = false, name= "CATEGORY_ID")
-    private Long categoryId;
-    @Column(nullable = false, unique = true)
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "CREATOR_ID")
+    private User creator;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "CATEGORY_ID")
+    private Category category;
+    @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -31,11 +35,11 @@ public class Project {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false, name= "GOAL_AMOUNT")
-    private Integer goalAmount;
-    @Column(nullable = false, name= "CURRENT_AMOUNT")
-    private Integer currentAmount;
-    @Column(nullable = false, name= "START_DATE")
-    private LocalDate startDate;
+    private Double goalAmount;
+    @Column(name= "CURRENT_AMOUNT")
+    private Double currentAmount = 0.0;
+    @Column(name= "START_DATE")
+    private LocalDate startDate = now();
     @Column(nullable = false, name= "END_DATE")
     private LocalDate endDate;
 }

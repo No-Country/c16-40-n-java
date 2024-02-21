@@ -5,7 +5,9 @@ import com.colaborapp.dto.AuthRequestDTO;
 import com.colaborapp.dto.AuthResponseDTO;
 import com.colaborapp.service.AuthService;
 import com.colaborapp.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,5 +36,16 @@ public class AuthServiceImpl implements AuthService {
                 .email(userDetails.getUsername())
                 .token(jwtService.generateToken(userDetails))
                 .build();
+    }
+    @Override
+    public String getCurrentUserFromToken(String token) {
+        String formattedToken  = extractToken(token);
+        return jwtService.extractUsername(formattedToken);
+    }
+    private String extractToken(String token) {
+        if (token != null) {
+            return token.substring(7);
+        }
+        return null;
     }
 }
