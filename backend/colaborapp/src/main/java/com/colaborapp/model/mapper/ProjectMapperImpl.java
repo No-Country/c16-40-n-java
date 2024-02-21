@@ -57,13 +57,14 @@ public class ProjectMapperImpl implements ProjectMapper {
         Assert.notNull(projectRequestDTO, "ProjectRequestDTO object must not be null.");
 
         return Project.builder()
+                .id(existingProject.getId())
                 .status(Status.valueOf(projectRequestDTO.status()))
                 .title(projectRequestDTO.title())
                 .description(projectRequestDTO.description())
                 .image(projectRequestDTO.image())
                 .goalAmount(projectRequestDTO.goalAmount())
                 .currentAmount(projectRequestDTO.current_amount())
-                .startDate(projectRequestDTO.startDate())
+                .startDate(existingProject.getStartDate())
                 .endDate(projectRequestDTO.endDate())
                 .build();
     }

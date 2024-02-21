@@ -45,8 +45,10 @@ public class ProjectController {
     }
     @PatchMapping("/{id}")
     public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id,
-                                                 @RequestBody ProjectRequestDTO projectRequestDTO) {
-        ProjectResponseDTO projectResponseDTO = projectService.updateProject(id, projectRequestDTO);
+                                                 @RequestBody ProjectRequestDTO projectRequestDTO,
+                                                            @RequestHeader(name = HttpHeaders.AUTHORIZATION) String token) {
+        String loggedUserData = authService.getCurrentUserFromToken(token);
+        ProjectResponseDTO projectResponseDTO = projectService.updateProject(loggedUserData, id, projectRequestDTO);
         return ResponseEntity.status(OK).body(projectResponseDTO);
     }
 }

@@ -10,7 +10,7 @@ public interface ProjectService {
 
     List<ProjectResponseDTO> getAllProjects();
 
-    ProjectResponseDTO updateProject(Long projectId, ProjectRequestDTO projectRequestDTO);
+    ProjectResponseDTO updateProject(String creatorEmail, Long projectId, ProjectRequestDTO projectRequestDTO);
 
     void deleteProject(Long projectId);
 

@@ -25,7 +25,7 @@ public class Project {
     @ManyToOne
     @JoinColumn(nullable = false, name = "CATEGORY_ID")
     private Category category;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
