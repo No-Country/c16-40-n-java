@@ -2,79 +2,76 @@ package com.colaborapp.service.impl;
 
 import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
+import com.colaborapp.model.Category;
 import com.colaborapp.model.Project;
 import com.colaborapp.model.Status;
+import com.colaborapp.model.User;
 import com.colaborapp.model.mapper.ProjectMapper;
+import com.colaborapp.repository.CategoryRepository;
 import com.colaborapp.repository.ProjectRepository;
+import com.colaborapp.repository.UserRepository;
+import com.colaborapp.service.CategoryService;
 import com.colaborapp.service.ProjectService;
+import com.colaborapp.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
-    @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper) {
-        this.projectRepository = projectRepository;
-        this.projectMapper = projectMapper;
-    }
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public Optional<ProjectResponseDTO> getProjectById(Long projectId) {
-        Optional<Project> project = projectRepository.findById(projectId);
-        return project.map(projectMapper::toProjectResponseDto);
+    public ProjectResponseDTO getProjectById(Long projectId) {
+        return projectRepository.findById(projectId).map(projectMapper::toProjectResponseDto)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
+
     }
 
     @Override
     public List<ProjectResponseDTO> getAllProjects() {
-        List<Project> projects = projectRepository.findAll();
-        List<ProjectResponseDTO> foundProjects=  projects.stream()
-                .map(projectMapper::toProjectResponseDto)
-                .collect(Collectors.toList());
-
-        if (!foundProjects.isEmpty()) {
-            return foundProjects;
-        } else {
-            return Collections.emptyList();
-        }
+        return projectRepository.findAll().stream().map(projectMapper::toProjectResponseDto).collect(Collectors.toList());
     }
 
     @Override
     public ProjectResponseDTO updateProject(Long projectId, ProjectRequestDTO projectRequestDTO) {
-        Optional<Project> toUpdateProject = projectRepository.findById(projectId);
-        if (toUpdateProject.isPresent()) {
-            Project updatedProject = projectMapper.toProjectEntityForUpdate(toUpdateProject.get(), projectRequestDTO);
-            Project savedProject = projectRepository.save(updatedProject);
-            return projectMapper.toProjectResponseDto(savedProject);
-        } else {
-            throw new EntityNotFoundException("Project not found with id: " + projectId);
-        }
+        return projectRepository.findById(projectId)
+                .map(project -> {
+                    Project updatedProject = projectMapper.toProjectEntityForUpdate(project, projectRequestDTO);
+                    projectRepository.save(updatedProject);
+                    return projectMapper.toProjectResponseDto(updatedProject);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
     }
 
     @Override
     public void deleteProject(Long projectId) {
-        Optional<Project> toDeleteProject = projectRepository.findById(projectId);
-
-        if (toDeleteProject.isPresent()) {
-            Project project = toDeleteProject.get();
-            project.setStatus(Status.DELETED);
-            projectRepository.save(project);
-        } else {
-            throw new EntityNotFoundException("Project not found with id: " + projectId);
-        }
+        projectRepository.findById(projectId)
+                .map(project -> {
+                    project.setStatus(Status.DELETED);
+                    return projectRepository.save(project);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + projectId));
     }
 
     @Override
-    public ProjectResponseDTO createProject(String userId, ProjectRequestDTO projectRequestDTO) {
-        Project newProject = projectRepository.save(projectMapper.toProjectEntity(userId,projectRequestDTO));
+    public ProjectResponseDTO createProject(String creatorEmail,ProjectRequestDTO projectRequestDTO) {
+        User user = userRepository.findByEmail(creatorEmail)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with email: " + projectRequestDTO.creator()));
+        Category category = categoryRepository.findById(projectRequestDTO.category())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + projectRequestDTO.category()));
+        Project newProject = projectMapper.toProjectEntity(projectRequestDTO);
+        newProject.setCreator(user);
+        newProject.setCategory(category);
+        projectRepository.save(newProject);
         return projectMapper.toProjectResponseDto(newProject);
     }
 }

@@ -1,6 +1,5 @@
 package com.colaborapp.dto;
 
-import com.colaborapp.model.Category;
 import com.colaborapp.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
@@ -10,14 +9,25 @@ import java.time.LocalDate;
 
 @Builder
 public record ProjectRequestDTO (
-    @NotNull(message = "Category ID is required") Long categoryId,
-    //@NotNull(message = "User ID is required") User userId,
-    @NotBlank(message = "Title is mandatory") String title,
+    @NotEmpty(message = "Category is required")
+    @NotBlank(message = "Category cannot be whitespaces")
+    Long category,
+    @NotEmpty(message = "Creator is required")
+    @NotBlank(message = "Creator cannot be whitespaces")
+    String creator,
+    @NotEmpty(message = "Title is required")
+    @NotBlank(message = "Title cannot be whitespaces")
+    String title,
     String status,
-    @NotBlank(message = "Image URL is mandatory") String image,
-    @NotBlank(message = "Description is mandatory") String description,
+    @NotEmpty(message = "Image URL is required")
+    @NotBlank(message = "Image URL cannot be whitespaces")
+    String image,
+    @NotEmpty(message = "Description is required")
+    @NotBlank(message = "Description cannot be whitespaces")
+    String description,
     @NotNull(message = "Goal amount is required")
-    @Positive(message = "Goal amount must be a positive number") Double goalAmount,
+    @Positive(message = "Goal amount must be a positive number")
+    Double goalAmount,
     Double current_amount,
     LocalDate startDate,
     @NotNull(message = "End date is required")

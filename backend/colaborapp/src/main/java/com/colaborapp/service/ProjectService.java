@@ -4,10 +4,9 @@ import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProjectService {
-    Optional<ProjectResponseDTO> getProjectById(Long projectId);
+    ProjectResponseDTO getProjectById(Long projectId);
 
     List<ProjectResponseDTO> getAllProjects();
 
@@ -15,5 +14,5 @@ public interface ProjectService {
 
     void deleteProject(Long projectId);
 
-    ProjectResponseDTO createProject(String userId, ProjectRequestDTO projectRequestDTO);
+    ProjectResponseDTO createProject(String creatorEmail, ProjectRequestDTO projectRequestDTO);
 }

@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @Builder
 public record ProjectResponseDTO (
     Long id,
-    Long userId,
-    Long categoryId,
+    String creator,
+    String category,
     String title,
     String status,
     String image,
