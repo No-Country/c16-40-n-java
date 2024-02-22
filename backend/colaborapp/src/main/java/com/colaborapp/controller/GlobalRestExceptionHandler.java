@@ -3,6 +3,7 @@ package com.colaborapp.controller;
 import com.colaborapp.model.exception.HttpCodeResponse;
 import com.colaborapp.model.exception.RequiredObjectException;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.NonNull;
@@ -71,10 +72,11 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /*
-     * Handle UserNotFoundException whe the user is not present.
+     * Handle UserNotFoundException and EntityNotFoundException whe the user is not present in the database or
+     * the concrete entity is not present in the database.
      * */
-    @ExceptionHandler(value = UsernameNotFoundException.class)
-    public ResponseEntity<ProblemDetail> handleUsernameNotFound(UsernameNotFoundException ex) {
+    @ExceptionHandler(value = {UsernameNotFoundException.class, EntityNotFoundException.class})
+    public ResponseEntity<ProblemDetail> handleUsernameNotFound(RuntimeException ex) {
         ProblemDetail details = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         details.setTitle(HttpCodeResponse.RESOURCE_NOT_FOUND.name());
         details.setDetail(ex.getMessage());
