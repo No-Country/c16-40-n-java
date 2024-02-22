@@ -1,9 +1,5 @@
-export default function Home() {
-  return (
-    <main>
-      <div>
-        <h1>Colaborapp</h1>
-      </div>
-    </main>
-  );
+import HomeContainer from '@/components/home/HomeContainer';
+
+export default function HomeComponent() {
+  return <HomeContainer />;
 }
