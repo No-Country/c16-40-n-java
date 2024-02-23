@@ -1,18 +1,22 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Logo from '@/components/ui/logo';
 
 const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center p-2 m-5 rounded-full bg-primary text-primary-foreground font-regular">
+    <nav className="fixed w-[95%] lg:w-5/6 top-0 flex justify-between items-center p-2 mt-5 lg:mt-10 rounded-full bg-primary text-secondary-foreground font-regular">
       <Link href={'/'}>
-        <div>LOGO</div>
+        <Logo />
       </Link>
-      <div className="flex gap-5 items-center">
+      <div className="flex gap-5 items-center text-sm lg:text-base">
         <Link href={'/about'} className="hover:underline underline-offset-2">
           ¿Quiénes somos?
         </Link>
         <Link href={'/login'}>
-          <Button variant={'secondary'} className="rounded-full">
+          <Button
+            variant={'secondary'}
+            className="rounded-full text-md text-sm lg:text-base"
+          >
             Iniciar sesión
           </Button>
         </Link>
