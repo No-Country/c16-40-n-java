@@ -1,4 +1,7 @@
+import LoginPageContainer from '@/components/login/loginPageContainer';
+
 const LoginPage = () => {
-  return <div>LoginPage</div>;
+  return <LoginPageContainer />;
 };
+
 export default LoginPage;
