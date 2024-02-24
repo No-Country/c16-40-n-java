@@ -23,8 +23,8 @@ interface Props {
 
 const ProjectCard = ({ data }: Props) => {
   return (
-    <Link href={`/project/${data.id}`}>
-      <Card className="w-96 bg-white text-secondary-foreground cursor-pointer">
+    <Link href={`/project/${data.id}`} className="m-auto">
+      <Card className="w-auto bg-white text-secondary-foreground cursor-pointer">
         <CardHeader className="text-lg">
           <CardTitle className="text-lg">{data.title}</CardTitle>
         </CardHeader>

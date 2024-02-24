@@ -30,7 +30,7 @@ const ProjectsContainer = () => {
             <SelectTrigger className="w-52 lg:w-64 font-medium bg-primary text-primary-foreground rounded-full">
               <SelectValue placeholder="Recaudar fondos para" />
             </SelectTrigger>
-            <SelectContent className='font-medium bg-primary text-primary-foreground"'>
+            <SelectContent className="font-medium bg-primary text-primary-foreground">
               <SelectItem className="text-primary-foreground" value="salud">
                 Salud
               </SelectItem>
@@ -50,7 +50,7 @@ const ProjectsContainer = () => {
           </Select>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 m-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
         {projectsData.map((data) => (
           <ProjectCard key={data.id} data={data} />
         ))}
