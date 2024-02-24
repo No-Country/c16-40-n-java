@@ -28,7 +28,7 @@ const formSchema = z
       .string()
       .min(4, { message: 'El apellido debe contener al menos 3 caracteres' }),
     email: z.string().email('El formato del mail ingresado es incorrecto.'),
-    telephone: z
+    phoneNumber: z
       .string()
       .min(10, { message: 'El numero ingresado es invalido' })
       .max(14, { message: 'El numero ingresado es invalido' }),
@@ -51,7 +51,7 @@ const RegisterForm = () => {
       name: '',
       lastName: '',
       email: '',
-      telephone: '',
+      phoneNumber: '',
       password: '',
       confirmPassword: '',
     },
@@ -62,7 +62,6 @@ const RegisterForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const confirmation = await register(values);
-    console.log(confirmation);
     if (confirmation) {
       router.push('/login');
       return toast({
@@ -142,7 +141,7 @@ const RegisterForm = () => {
           />
           <FormField
             control={form.control}
-            name="telephone"
+            name="phoneNumber"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Teléfono</FormLabel>

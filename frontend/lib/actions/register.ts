@@ -4,7 +4,7 @@ interface Props {
   name: string;
   lastName: string;
   email: string;
-  telephone: string;
+  phoneNumber: string;
   password: string;
   confirmPassword: string;
 }
