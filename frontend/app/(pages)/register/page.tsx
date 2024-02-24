@@ -1,4 +1,6 @@
+import RegisterPageContainer from '@/components/register/registerPageContainer';
+
 const RegisterPage = () => {
-  return <div>RegisterPage</div>;
+  return <RegisterPageContainer />;
 };
 export default RegisterPage;
