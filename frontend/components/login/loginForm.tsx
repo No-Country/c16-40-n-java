@@ -45,7 +45,11 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Correo</FormLabel>
               <FormControl>
-                <Input placeholder="correo" {...field} />
+                <Input
+                  className="border-none  bg-zinc-300"
+                  placeholder="Correo"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -58,7 +62,11 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input placeholder="Contraseña" {...field} />
+                <Input
+                  className="border-none  bg-zinc-300"
+                  placeholder="Contraseña"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

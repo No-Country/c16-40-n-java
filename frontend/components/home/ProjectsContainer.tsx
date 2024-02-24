@@ -14,7 +14,7 @@ const ProjectsContainer = () => {
   return (
     <section className="w-full flex flex-col p-5">
       <div className="pb-5">
-        <h2 className="text-secondary-foreground text-base lg:text-xl font-bold">
+        <h2 className="text-base lg:text-xl font-bold">
           Descubre proyectos que te inspiren y te impulsen a actuar.
         </h2>
         <div className="flex py-5 gap-3">

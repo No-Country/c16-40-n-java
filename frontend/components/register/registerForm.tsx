@@ -17,13 +17,17 @@ import { Input } from '@/components/ui/input';
 
 const formSchema = z
   .object({
-    name: z.string(),
-    lastName: z.string(),
+    name: z
+      .string()
+      .min(4, { message: 'El nombre debe contener al menos 4 caracteres' }),
+    lastName: z
+      .string()
+      .min(4, { message: 'El apellido debe contener al menos 3 caracteres' }),
     email: z.string().email('El formato del mail ingresado es incorrecto.'),
     telephone: z
       .string()
-      .min(10, { message: 'Must be a valid mobile number' })
-      .max(14, { message: 'Must be a valid mobile number' }),
+      .min(10, { message: 'El numero ingresado es invalido' })
+      .max(14, { message: 'El numero ingresado es invalido' }),
     password: z.string().min(4, {
       message: 'La contraseña debe contener al menos 4 caracteres.',
     }),
@@ -64,7 +68,11 @@ const RegisterForm = () => {
               <FormItem className="w-full">
                 <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                  <Input placeholder="Nombre" {...field} />
+                  <Input
+                    className="border-none bg-zinc-300"
+                    placeholder="Nombre"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -77,7 +85,11 @@ const RegisterForm = () => {
               <FormItem className="w-full">
                 <FormLabel>Apellido</FormLabel>
                 <FormControl>
-                  <Input placeholder="Apellido" {...field} />
+                  <Input
+                    className="border-none bg-zinc-300"
+                    placeholder="Apellido"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -92,7 +104,11 @@ const RegisterForm = () => {
               <FormItem className="w-full">
                 <FormLabel>Correo</FormLabel>
                 <FormControl>
-                  <Input placeholder="Correo" {...field} />
+                  <Input
+                    className="border-none bg-zinc-300"
+                    placeholder="Correo"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -105,7 +121,11 @@ const RegisterForm = () => {
               <FormItem className="w-full">
                 <FormLabel>Teléfono</FormLabel>
                 <FormControl>
-                  <Input placeholder="Teléfono" {...field} />
+                  <Input
+                    className="border-none bg-zinc-300"
+                    placeholder="Teléfono"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -119,7 +139,11 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input placeholder="Contraseña" {...field} />
+                <Input
+                  className="border-none bg-zinc-300"
+                  placeholder="Contraseña"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -132,7 +156,11 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Confirmar contraseña</FormLabel>
               <FormControl>
-                <Input placeholder="Confirmar contraseña" {...field} />
+                <Input
+                  className="border-none bg-zinc-300"
+                  placeholder="Confirmar contraseña"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
