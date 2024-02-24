@@ -14,9 +14,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { login } from '@/lib/actions/login';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 const formSchema = z.object({
-  correo: z.string().email('El formato del mail ingresado es incorrecto.'),
+  email: z.string().email('El formato del mail ingresado es incorrecto.'),
   password: z.string().min(4, {
     message: 'La contraseña debe contener al menos 4 caracteres.',
   }),
@@ -26,13 +30,29 @@ const LoginForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      correo: '',
+      email: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const userData = await login(values);
+    if (userData) {
+      localStorage.setItem('email', userData.email);
+      localStorage.setItem('token', userData.token);
+      router.push('/');
+    } else {
+      return toast({
+        variant: 'destructive',
+        title: '¡Ups! Algo salió mal!',
+        description:
+          'Hubo un problema al intentar iniciar sesión, por favor revise sus datos e intente nuevamente.',
+        action: <ToastAction altText="Ok">Ok</ToastAction>,
+      });
+    }
   }
 
   return (
@@ -40,7 +60,7 @@ const LoginForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="correo"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Correo</FormLabel>

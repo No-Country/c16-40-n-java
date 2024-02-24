@@ -14,6 +14,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { register } from '@/lib/actions/register';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
 
 const formSchema = z
   .object({
@@ -53,8 +57,30 @@ const RegisterForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const { toast } = useToast();
+  const router = useRouter();
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const confirmation = await register(values);
+    console.log(confirmation);
+    if (confirmation) {
+      router.push('/login');
+      return toast({
+        className: 'bg-green-500 text-green-100',
+        title: 'Todo salió bien!',
+        description:
+          'Se registró exitosamente el usuario, por favor inicie sesión.',
+        action: <ToastAction altText="Ok">Ok</ToastAction>,
+      });
+    } else {
+      return toast({
+        variant: 'destructive',
+        title: '¡Ups! Algo salió mal!',
+        description:
+          'Hubo un problema al intentar registrar el usuario, por favor revise sus datos e intente nuevamente. Si ya tiene una cuenta creada intente iniciar sesión.',
+        action: <ToastAction altText="Ok">Ok</ToastAction>,
+      });
+    }
   }
 
   return (
