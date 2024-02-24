@@ -4,15 +4,12 @@
 
 body {
   height: 100dvh;
-  width: 100dvw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* width: 100dvw;*/
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 92%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;

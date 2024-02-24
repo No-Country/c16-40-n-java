@@ -4,7 +4,7 @@ import Logo from '@/components/ui/logo';
 
 const Navbar = () => {
   return (
-    <nav className="fixed w-[95%] lg:w-5/6 top-0 flex justify-between items-center p-2 mt-5 lg:mt-10 rounded-full bg-primary text-secondary-foreground font-regular">
+    <nav className="absolute w-[95%] lg:w-5/6 left-1/2 translate-x-[-50%] flex justify-between items-center p-2 mt-5 lg:mt-10 rounded-full bg-primary text-secondary-foreground font-regular">
       <Link href={'/'}>
         <Logo />
       </Link>
