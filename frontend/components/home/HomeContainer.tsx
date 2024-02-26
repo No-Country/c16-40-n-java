@@ -15,7 +15,7 @@ const HomeContainer = () => {
             <span className="text-primary">lo imposible.</span>
           </p>
           <Link href={'/new-project'}>
-            <Button className="font-bold w-96 h-12 rounded-full lg:text-2xl">
+            <Button className="font-bold w-72 lg:w-96 h-12 rounded-full lg:text-2xl">
               Comienza tu proyecto!
             </Button>
           </Link>
