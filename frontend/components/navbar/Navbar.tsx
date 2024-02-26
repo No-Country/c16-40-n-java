@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Logo from '@/components/ui/logo';
+import MobileMenu from '../mobileMenu';
 
 const Navbar = () => {
   return (
@@ -8,7 +9,10 @@ const Navbar = () => {
       <Link href={'/'}>
         <Logo />
       </Link>
-      <div className="flex gap-5 items-center text-sm lg:text-base">
+      <div className="hidden sm:flex gap-5 items-center text-sm lg:text-base">
+        <Link href={'/'} className="hover:underline underline-offset-2">
+          Inicio
+        </Link>
         <Link href={'/about'} className="hover:underline underline-offset-2">
           ¿Quiénes somos?
         </Link>
@@ -21,6 +25,7 @@ const Navbar = () => {
           </Button>
         </Link>
       </div>
+      <MobileMenu />
     </nav>
   );
 };

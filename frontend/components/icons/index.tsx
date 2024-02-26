@@ -1,7 +1,8 @@
-import { LucideProps, Search } from 'lucide-react';
+import { LucideProps, Menu, Search } from 'lucide-react';
 
 export const Icons = {
   Search: Search,
+  Menu: Menu,
   AppLogo: (props: LucideProps) => (
     <svg
       width="79"
