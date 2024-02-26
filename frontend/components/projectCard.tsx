@@ -9,6 +9,7 @@ import {
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import Link from 'next/link';
+import { truncateText } from '@/lib/functions';
 
 interface Props {
   data: {
@@ -30,7 +31,9 @@ const ProjectCard = ({ data }: Props) => {
         </CardHeader>
         <CardContent className="grid gap-4">
           <Image src={data.image} alt={''} width={350} height={10} />
-          <CardDescription>{data.description}</CardDescription>
+          <CardDescription>
+            {truncateText(`${data.description}`, 100)}
+          </CardDescription>
         </CardContent>
         <CardFooter>
           <Progress value={data.progress} />
