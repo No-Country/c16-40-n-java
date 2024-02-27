@@ -47,7 +47,7 @@ const LoginForm = () => {
       localStorage.setItem('token', userData.token);
       router.push('/');
     } else {
-      return toast({
+      toast({
         variant: 'destructive',
         title: '¡Ups! Algo salió mal!',
         description:

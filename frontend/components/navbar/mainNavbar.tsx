@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Logo from '@/components/ui/logo';
 import MobileMenu from '@/components/mobileMenu';
+import NavbarUserMenu from '../navbarUserMenu';
 
 const MainNavbar = () => {
   return (
@@ -16,14 +16,7 @@ const MainNavbar = () => {
         <Link href={'/about'} className="hover:underline underline-offset-2">
           ¿Quiénes somos?
         </Link>
-        <Link href={'/login'}>
-          <Button
-            variant={'secondary'}
-            className="rounded-full text-md text-sm lg:text-base border-foreground border-2"
-          >
-            Iniciar sesión
-          </Button>
-        </Link>
+        <NavbarUserMenu />
       </div>
       <MobileMenu />
     </nav>
