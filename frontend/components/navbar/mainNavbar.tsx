@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Logo from '@/components/ui/logo';
-import MobileMenu from '@/components/mobileMenu';
-import NavbarUserMenu from '../navbarUserMenu';
+import MobileMenu from '@/components/mobile/mobileMenu';
+import NavbarUserMenu from '@/components/navbarUserMenu';
 
 const MainNavbar = () => {
   return (

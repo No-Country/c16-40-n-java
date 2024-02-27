@@ -33,7 +33,7 @@ const NavbarUserMenu = () => {
       {isClient && user ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar>
+            <Avatar className="border-foreground">
               <AvatarFallback>
                 {user?.slice(0, 2).toLocaleUpperCase()}
               </AvatarFallback>
@@ -42,7 +42,7 @@ const NavbarUserMenu = () => {
           <DropdownMenuContent className="mr-10">
             <DropdownMenuItem
               className="cursor-pointer"
-              onClick={() => handleLogOut}
+              onClick={() => handleLogOut()}
             >
               Cerrar sesión
             </DropdownMenuItem>
