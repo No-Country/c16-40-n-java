@@ -1,7 +1,11 @@
 package com.colaborapp.dto;
 
+import com.colaborapp.model.CategoryType;
 import lombok.Builder;
 
 @Builder
-public class CategoryResponseDTO {
+public record CategoryResponseDTO(
+        Long id,
+        CategoryType type
+) {
 }
