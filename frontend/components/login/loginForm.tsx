@@ -42,9 +42,9 @@ const LoginForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const userData = await login(values);
-    if (userData) {
-      localStorage.setItem('email', userData.email);
+    if (userData?.token) {
       localStorage.setItem('token', userData.token);
+      localStorage.setItem('email', userData.email);
       router.push('/');
     } else {
       toast({
