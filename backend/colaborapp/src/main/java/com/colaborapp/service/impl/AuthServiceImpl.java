@@ -45,11 +45,4 @@ public class AuthServiceImpl implements AuthService {
     public String getAuthenticatedUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-
-    private String extractToken(String token) {
-        if (token != null) {
-            return token.substring(7);
-        }
-        return null;
-    }
 }
