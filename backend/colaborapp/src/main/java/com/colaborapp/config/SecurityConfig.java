@@ -26,10 +26,17 @@ public class SecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers(HttpMethod.GET, "/api/projects","/api/projects/{id}")
-                                .permitAll()
-                                .requestMatchers("/api/auth/login", "/api/users/registration", "/api/projects","/api/projects/{id}")
-                                .permitAll()
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "/api/auth/login",
+                                        "/api/users/registration"
+                                ).permitAll()
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "/api/projects",
+                                        "/api/projects/{id}",
+                                        "api/categories"
+                                ).permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
