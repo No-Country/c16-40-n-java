@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Logo from '@/components/ui/logo';
-import MobileMenu from '../mobileMenu';
+import MobileMenu from '@/components/mobileMenu';
 
-const Navbar = () => {
+const MainNavbar = () => {
   return (
-    <nav className="absolute w-[95%] lg:w-5/6 left-1/2 translate-x-[-50%] h-16 flex justify-between items-center p-2 mt-5 lg:mt-10 rounded-full bg-primary text-secondary-foreground font-regular">
+    <nav className="absolute w-[95%] top-0 lg:w-5/6 left-1/2 translate-x-[-50%] h-16 flex justify-between items-center p-2 mt-5 lg:mt-10 rounded-full bg-primary text-secondary-foreground font-regular">
       <Link href={'/'}>
         <Logo />
       </Link>
@@ -19,7 +19,7 @@ const Navbar = () => {
         <Link href={'/login'}>
           <Button
             variant={'secondary'}
-            className="rounded-full text-md text-sm lg:text-base"
+            className="rounded-full text-md text-sm lg:text-base border-foreground border-2"
           >
             Iniciar sesión
           </Button>
@@ -29,4 +29,4 @@ const Navbar = () => {
     </nav>
   );
 };
-export default Navbar;
+export default MainNavbar;

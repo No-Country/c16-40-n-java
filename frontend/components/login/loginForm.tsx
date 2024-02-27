@@ -15,6 +15,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { login } from '@/lib/actions/login';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
@@ -95,10 +97,14 @@ const LoginForm = () => {
         <p className="mt-0 text-sm hover:underline underline-offset-2 cursor-pointer">
           Olvidaste la contraseña?
         </p>
-        <div className="w-full">
+        <div className="w-full flex flex-col">
           <Button type="submit" className="w-3/4 h-16 m-auto rounded-full">
             INICIAR SESIÓN
           </Button>
+          <div className="flex items-center space-x-2 py-5">
+            <Checkbox id="terms" className="rounded-none" />
+            <Label htmlFor="remember me">Recordarme</Label>
+          </div>
         </div>
       </form>
     </Form>

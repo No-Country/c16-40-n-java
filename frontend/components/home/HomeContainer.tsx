@@ -1,14 +1,11 @@
-import Navbar from '@/components/navbar/Navbar';
 import { Button } from '@/components/ui/button';
-import ProjectsContainer from './ProjectsContainer';
-import Footer from '../footer';
+import ProjectsContainer from '@/components/home/ProjectsContainer';
 import Link from 'next/link';
 
 const HomeContainer = () => {
   return (
-    <main className="h-full w-full">
-      <Navbar />
-      <div className="bg-[url('/home_image.webp')] bg-center bg-cover pt-5 h-[85%] lg:h-[90%]">
+    <section>
+      <div className="bg-[url('/home_image.webp')] bg-center bg-cover pt-5 h-[36rem] md:h-[37rem] lg:h-[43rem]">
         <section className="flex flex-col items-center justify-center h-full gap-20 lg:gap-40 pt-20">
           <p className="text-primary-foreground font-semibold text-center text-4xl lg:text-6xl">
             Tu <span className="text-primary">apoyo</span> hace{' '}
@@ -22,8 +19,7 @@ const HomeContainer = () => {
         </section>
       </div>
       <ProjectsContainer />
-      <Footer />
-    </main>
+    </section>
   );
 };
 export default HomeContainer;
