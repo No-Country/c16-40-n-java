@@ -3,11 +3,13 @@ package com.colaborapp.controller;
 import com.colaborapp.model.exception.HttpCodeResponse;
 import com.colaborapp.model.exception.RequiredObjectException;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.DateTimeException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
@@ -64,7 +67,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
      * Handle token expiration.
      * */
     @ExceptionHandler(value = ExpiredJwtException.class)
-    public ResponseEntity<ProblemDetail> handleExpiredJwt(HttpMessageNotReadableException ex) {
+    public ResponseEntity<ProblemDetail> handleExpiredJwt(ExpiredJwtException ex, @NonNull WebRequest request) {
         ProblemDetail details = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
         details.setTitle(HttpCodeResponse.EXPIRED_TOKEN.name());
         details.setDetail(ex.getMessage());
@@ -92,6 +95,39 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ProblemDetail> handleRequiredObject(RuntimeException ex) {
         ProblemDetail details = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         details.setTitle(HttpCodeResponse.INVALID_ARGUMENT.name());
+        details.setDetail(ex.getMessage());
+        return ResponseEntity.status(details.getStatus()).body(details);
+    }
+
+    /*
+     * Handle EntityExistsException when try to create the same entity object.
+     * */
+    @ExceptionHandler(value = EntityExistsException.class)
+    public ResponseEntity<ProblemDetail> handleEntityExists(EntityExistsException ex) {
+        ProblemDetail details = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        details.setTitle(HttpCodeResponse.DUPLICATED_RESOURCE.name());
+        details.setDetail(ex.getMessage());
+        return ResponseEntity.status(details.getStatus()).body(details);
+    }
+
+    /*
+     * Handle DateTimeException when the date is invalid or the re problems between dates.
+     * */
+    @ExceptionHandler(value = DateTimeException.class)
+    public ResponseEntity<ProblemDetail> handleDateTime(DateTimeException ex) {
+        ProblemDetail details = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        details.setTitle(HttpCodeResponse.INVALID_ARGUMENT.name());
+        details.setDetail(ex.getMessage());
+        return ResponseEntity.status(details.getStatus()).body(details);
+    }
+
+    /*
+    * Handle RequestRejectedException when there is a problem processing the request.
+    * */
+    @ExceptionHandler(value = RequestRejectedException.class)
+    public ResponseEntity<ProblemDetail> handleRequestRejected(RequestRejectedException ex, WebRequest request) {
+        ProblemDetail details = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+        details.setTitle(HttpCodeResponse.ACTION_DENIED.name());
         details.setDetail(ex.getMessage());
         return ResponseEntity.status(details.getStatus()).body(details);
     }
