@@ -2,6 +2,7 @@ import { projectsData } from '@/lib/constants';
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
+import { Icons } from '../icons';
 
 interface Props {
   projectId: string;
@@ -36,8 +37,20 @@ const ProjectPageContainer = ({ projectId }: Props) => {
               {`$${selectedProject?.goalAmount.toLocaleString('es-ES')}`} ARS
             </p>
           </div>
-          <div className="flex items-center m-auto">
-            <Button className="w-32 lg:w-80">Donar ahora</Button>
+          <div className="flex flex-col items-center m-auto gap-5">
+            <div className="flex items-center mr-auto">
+              <Icons.PlusIcon />{' '}
+              <p className="font-semibold">
+                {selectedProject?.goalAmount.toString().slice(0, 2)} donativos
+              </p>
+            </div>
+            <Button className="w-56 md:w-80 rounded-full">Donar ahora</Button>
+            <Button
+              variant={'outline'}
+              className="w-48 md:w-64 rounded-full bg-inherit border-2 border-foreground text-foreground"
+            >
+              Quiero ser voluntario
+            </Button>
           </div>
         </div>
         <p>{selectedProject?.description}</p>

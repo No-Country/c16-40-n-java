@@ -116,4 +116,21 @@ export const Icons = {
       />
     </svg>
   ),
+  PlusIcon: (props: LucideProps) => (
+    <svg
+      width="42"
+      height="42"
+      viewBox="0 0 46 46"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M22 41.25C32.6315 41.25 41.25 32.6315 41.25 22C41.25 11.3685 32.6315 2.75 22 2.75C11.3685 2.75 2.75 11.3685 2.75 22C2.75 32.6315 11.3685 41.25 22 41.25Z"
+        fill="#6A8916"
+      />
+      <path d="M19.25 12.8359H24.75V31.1693H19.25V12.8359Z" fill="white" />
+      <path d="M12.8333 19.25H31.1666V24.75H12.8333V19.25Z" fill="white" />
+    </svg>
+  ),
 };
