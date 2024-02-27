@@ -19,31 +19,46 @@ const ProjectsContainer = () => {
         </h2>
         <div className="flex py-5 gap-3">
           <div className="relative">
-            <Icons.Search className="absolute top-1/4 left-[5%] text-muted-foreground" />
+            <Icons.Search className="absolute top-1/4 left-[5%] text-foreground" />
             <Input
               type="search"
               placeholder="Buscar"
-              className="w-32 lg:w-52 rounded-full pl-10"
+              className="w-32 lg:w-52 rounded-full pl-10 border-2 border-foreground"
             />
           </div>
           <Select>
-            <SelectTrigger className="w-52 lg:w-64 font-medium bg-primary text-primary-foreground rounded-full">
+            <SelectTrigger className="w-52 lg:w-64 font-medium bg-primary text-primary-foreground rounded-full border-0">
               <SelectValue placeholder="Recaudar fondos para" />
             </SelectTrigger>
-            <SelectContent className="font-medium bg-primary text-primary-foreground">
-              <SelectItem className="text-primary-foreground" value="salud">
+            <SelectContent className="font-medium bg-primary text-primary-foreground border-0">
+              <SelectItem
+                className="text-primary-foreground cursor-pointer"
+                value="salud"
+              >
                 Salud
               </SelectItem>
-              <SelectItem className="text-primary-foreground" value="educacion">
+              <SelectItem
+                className="text-primary-foreground cursor-pointer"
+                value="educacion"
+              >
                 Educación
               </SelectItem>
-              <SelectItem className="text-primary-foreground" value="social">
+              <SelectItem
+                className="text-primary-foreground cursor-pointer"
+                value="social"
+              >
                 Social
               </SelectItem>
-              <SelectItem className="text-primary-foreground" value="ambiente">
+              <SelectItem
+                className="text-primary-foreground cursor-pointer"
+                value="ambiente"
+              >
                 Medio ambiente
               </SelectItem>
-              <SelectItem className="text-primary-foreground" value="otros">
+              <SelectItem
+                className="text-primary-foreground cursor-pointer"
+                value="otros"
+              >
                 Otros
               </SelectItem>
             </SelectContent>
