@@ -34,6 +34,7 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "/api/projects",
+                                        "api/projects/actives",
                                         "/api/projects/{id}",
                                         "api/categories"
                                 ).permitAll()

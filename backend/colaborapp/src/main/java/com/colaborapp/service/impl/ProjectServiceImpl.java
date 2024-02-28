@@ -55,7 +55,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (!projectToUpdate.getCreator().getEmail().equals(authService.getAuthenticatedUsername())) {
             throw new RequestRejectedException("Trying to modify a not owned project.");
         }
-        if (Objects.nonNull(updateRequest.categoryType()) && !updateRequest.categoryType().trim().isEmpty()){
+        if (Objects.nonNull(updateRequest.categoryType()) && !updateRequest.categoryType().trim().isEmpty()) {
             CategoryType categoryType = CategoryType.getCategoryTypeFromString(updateRequest.categoryType());
             Category category = categoryService.getCategoryByType(categoryType);
             projectToUpdate.setCategory(category);
@@ -82,6 +82,17 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectResponseDTO> getAllProjects() {
         return projectRepository.findAll().stream().map(projectMapper::toDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectResponseDTO> getAllActiveProjects() {
+        return projectRepository.findAll()
+                .stream()
+                .filter(project -> project.getEndDate().isAfter(LocalDate.now()) &&
+                        project.getStatus().equals(Status.ACTIVE) &&
+                        project.getCreator().isEnable())
+                .map(projectMapper::toDTO)
+                .toList();
     }
 
     @Override

@@ -15,6 +15,8 @@ public interface ProjectService {
 
     List<ProjectResponseDTO> getAllProjects();
 
+    List<ProjectResponseDTO> getAllActiveProjects();
+
     Project getProjectEntityById(Long id);
 
     void deleteProject(Long id);

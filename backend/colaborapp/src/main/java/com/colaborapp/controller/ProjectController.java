@@ -24,6 +24,11 @@ public class ProjectController {
         return ResponseEntity.status(OK).body(responseList);
     }
 
+    @GetMapping("/actives")
+    public ResponseEntity<List<ProjectResponseDTO>> listActiveProjects() {
+        return ResponseEntity.status(OK).body(projectService.getAllActiveProjects());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProjectResponseDTO> getProjectById(@PathVariable Long id) {
         ProjectResponseDTO response = projectService.getProjectById(id);
