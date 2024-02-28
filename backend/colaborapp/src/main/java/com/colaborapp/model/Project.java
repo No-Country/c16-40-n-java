@@ -68,7 +68,7 @@ public class Project {
     }
 
     public void setStatus(Status status) {
-        if (Objects.nonNull(status) && !this.status.equals(status)) {
+        if (Objects.nonNull(status)) {
             this.status = status;
         }
     }
@@ -113,6 +113,9 @@ public class Project {
             }
             if ((endDate.isEqual(this.startDate))) {
                 throw new DateTimeException("End date and Start date are same date. Please, make sure end date is after.");
+            }
+            if (endDate.isBefore(LocalDate.now()) || endDate.isEqual(LocalDate.now())) {
+                throw new DateTimeException(("End date can't be equal or before the current date."));
             }
             this.endDate = endDate;
         }
