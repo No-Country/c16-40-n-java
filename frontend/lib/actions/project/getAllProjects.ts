@@ -1,6 +1,6 @@
 'use server';
 
-interface project {
+interface projects {
   id: number;
   creator: {
     id: number;
@@ -20,15 +20,15 @@ interface project {
   endDate: string;
 }
 
-export async function getProjectById(id: string) {
+export async function getAllProjects() {
   try {
-    const response = await fetch(`${process.env.API_URL}/projects/${id}`, {
+    const response = await fetch(`${process.env.API_URL}/projects/actives`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const result: project = await response.json();
+    const result = await response.json();
     return result;
   } catch (error) {
     console.log(error);

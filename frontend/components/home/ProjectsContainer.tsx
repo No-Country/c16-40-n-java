@@ -1,4 +1,3 @@
-import { projectsData } from '@/lib/constants';
 import ProjectCard from '@/components/projectCard';
 import { Input } from '@/components/ui/input';
 import {
@@ -9,8 +8,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Icons } from '../icons';
+import { getAllProjects } from '@/lib/actions/project/getAllProjects';
 
-const ProjectsContainer = () => {
+const ProjectsContainer = async () => {
+  const projects = await getAllProjects();
+
   return (
     <section className="w-full flex flex-col p-5">
       <div className="pb-5">
@@ -66,7 +68,7 @@ const ProjectsContainer = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
-        {projectsData.map((data) => (
+        {projects?.map((data: any) => (
           <ProjectCard key={data.id} data={data} />
         ))}
       </div>
