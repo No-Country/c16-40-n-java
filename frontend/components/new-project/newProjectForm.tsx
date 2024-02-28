@@ -67,7 +67,7 @@ const NewProjectForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const valuesFormated = {
       ...values,
-      endDate: format(values.endDate, 'dd/MM/yy'),
+      endDate: format(values.endDate, 'dd/MM/yyyy'),
     };
     const projectData = await createProject(valuesFormated, userToken!);
     if (projectData) {
@@ -184,7 +184,7 @@ const NewProjectForm = () => {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, 'dd/MM/yy')
+                          format(field.value, 'dd/MM/yyyy')
                         ) : (
                           <span>Selecciona una fecha</span>
                         )}
