@@ -13,11 +13,22 @@ import Link from 'next/link';
 interface Props {
   data: {
     id: number;
+    creator: {
+      id: number;
+      name: string;
+      lastName: string;
+      email: string;
+      phoneNumber: string | null;
+    };
+    category: string;
     title: string;
+    status: string;
     image: string;
     description: string;
     goalAmount: number;
-    progress: number;
+    currentAmount: number;
+    startDate: string;
+    endDate: string;
   };
 }
 
@@ -35,7 +46,10 @@ const ProjectCard = ({ data }: Props) => {
           </CardDescription>
         </CardContent>
         <CardFooter className="flex flex-col gap-1">
-          <Progress className="border-1" value={data.progress} />
+          <Progress
+            className="border-1"
+            value={(data.currentAmount * 100) / data.goalAmount}
+          />
           <p className="mr-auto font-semibold">
             {`$${data?.goalAmount.toLocaleString('es-ES')}`} ARS
           </p>

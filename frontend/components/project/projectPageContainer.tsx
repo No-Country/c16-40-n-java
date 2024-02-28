@@ -1,17 +1,14 @@
-import { projectsData } from '@/lib/constants';
-import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { Icons } from '../icons';
+import { Icons } from '@/components/icons';
+import { getProjectById } from '@/lib/actions/project/getProjectById';
 
 interface Props {
   projectId: string;
 }
 
-const ProjectPageContainer = ({ projectId }: Props) => {
-  const selectedProject = projectsData.find(
-    (project) => project.id.toString() === projectId
-  );
+const ProjectPageContainer = async ({ projectId }: Props) => {
+  const selectedProject = await getProjectById(projectId);
 
   return (
     <section className="flex flex-col items-center h-full">
@@ -20,24 +17,19 @@ const ProjectPageContainer = ({ projectId }: Props) => {
           {selectedProject?.title}
         </h2>
         <div className="flex flex-col lg:flex-row gap-4 py-10">
-          <div>
-            {selectedProject?.image ? (
-              <Image
-                src={selectedProject?.image}
-                alt={''}
-                width={500}
-                height={500}
-                className="rounded-lg"
+          <div className="w-full lg:w-1/2 h-48">
+            {selectedProject?.image && (
+              <div
+                className="bg-center bg-cover h-full rounded-lg"
+                style={{ backgroundImage: `url(${selectedProject.image})` }}
               />
-            ) : (
-              ''
             )}
-            <Progress className="mt-5" value={selectedProject?.progress} />
-            <p className="pt-1 font-semibold">
-              {`$${selectedProject?.goalAmount.toLocaleString('es-ES')}`} ARS
-            </p>
           </div>
           <div className="flex flex-col items-center m-auto gap-5">
+            <div>
+              <p>Fecha de inicio: {selectedProject?.startDate}</p>
+              <p>Fecha de finalización: {selectedProject?.endDate}</p>
+            </div>
             <div className="flex items-center mr-auto">
               <Icons.PlusIcon />{' '}
               <p className="font-semibold">
@@ -53,7 +45,18 @@ const ProjectPageContainer = ({ projectId }: Props) => {
             </Button>
           </div>
         </div>
-        <p>{selectedProject?.description}</p>
+        <div className="wfull lg:w-1/2">
+          <Progress
+            value={
+              (selectedProject?.currentAmount! * 100) /
+              selectedProject?.goalAmount!
+            }
+          />
+          <p className="pt-1 font-semibold">
+            {`$${selectedProject?.goalAmount.toLocaleString('es-ES')}`} ARS
+          </p>
+        </div>
+        <p className="mt-4">{selectedProject?.description}</p>
       </div>
     </section>
   );

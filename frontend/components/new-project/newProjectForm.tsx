@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
-import { createProject } from '@/lib/actions/createProject';
+import { createProject } from '@/lib/actions/project/createProject';
 import CategorySelect from './categorySelect';
 import { Calendar } from '../ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
