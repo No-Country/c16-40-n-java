@@ -1,6 +1,6 @@
 'use server';
 
-interface Props {
+interface registerForm {
   name: string;
   lastName: string;
   email: string;
@@ -9,7 +9,7 @@ interface Props {
   confirmPassword: string;
 }
 
-export async function register(formData: Props) {
+export async function register(formData: registerForm) {
   try {
     const response = await fetch(`${process.env.API_URL}/users/registration`, {
       method: 'POST',

@@ -1,11 +1,11 @@
 'use server';
 
-interface Props {
+interface loginForm {
   email: string;
   password: string;
 }
 
-export async function login(formData: Props) {
+export async function login(formData: loginForm) {
   try {
     const response = await fetch(`${process.env.API_URL}/auth/login`, {
       method: 'POST',

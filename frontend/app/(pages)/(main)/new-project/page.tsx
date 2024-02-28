@@ -1,4 +1,6 @@
+import NewProjectPageContainer from '@/components/new-project/newProjectPageContainer';
+
 const NewProjectPage = () => {
-  return <div>NewProjectPage</div>;
+  return <NewProjectPageContainer />;
 };
 export default NewProjectPage;

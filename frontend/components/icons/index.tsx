@@ -1,8 +1,9 @@
-import { LucideProps, Menu, Search } from 'lucide-react';
+import { Calendar, LucideProps, Menu, Search } from 'lucide-react';
 
 export const Icons = {
   Search: Search,
   Menu: Menu,
+  Calendar: Calendar,
   AppLogo: (props: LucideProps) => (
     <svg
       width="79"
