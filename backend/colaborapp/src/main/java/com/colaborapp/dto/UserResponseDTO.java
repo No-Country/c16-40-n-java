@@ -8,6 +8,7 @@ public record UserResponseDTO(
         String name,
         String lastName,
         String email,
-        String phoneNumber
+        String phoneNumber,
+        UserProjectsDTO projects
 ) {
 }
