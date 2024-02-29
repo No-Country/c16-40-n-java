@@ -13,10 +13,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem('token') || null
+    typeof window !== 'undefined' ? localStorage.getItem('token') : null
   );
   const [userData, setUserData] = useState<string | null>(
-    localStorage.getItem('userData') || null
+    typeof window !== 'undefined' ? localStorage.getItem('userData') : null
   );
 
   const login = (newToken: string, newUserData: string) => {

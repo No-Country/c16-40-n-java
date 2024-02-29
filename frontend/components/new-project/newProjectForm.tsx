@@ -26,6 +26,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Icons } from '../icons';
 import { useState } from 'react';
+import { useAuth } from '@/providers/authProvider';
 
 const formSchema = z.object({
   title: z
@@ -60,16 +61,14 @@ const NewProjectForm = () => {
 
   const { toast } = useToast();
   const router = useRouter();
-  const [userToken, setUserToken] = useState(
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null
-  );
+  const { token } = useAuth();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const valuesFormated = {
       ...values,
       endDate: format(values.endDate, 'dd/MM/yyyy'),
     };
-    const projectData = await createProject(valuesFormated, userToken!);
+    const projectData = await createProject(valuesFormated, token!);
     if (projectData) {
       router.push(`/project/${projectData.id}`);
       return toast({
