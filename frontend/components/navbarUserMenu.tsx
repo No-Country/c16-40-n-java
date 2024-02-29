@@ -3,39 +3,29 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useEffect, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/providers/authProvider';
 
 const NavbarUserMenu = () => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const [user, setUser] = useState(
-    typeof window !== 'undefined' ? localStorage.getItem('email') : null
-  );
+  const { userData, logout } = useAuth();
 
   const handleLogOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
-    setUser(null);
+    logout();
   };
 
   return (
     <>
-      {isClient && user ? (
+      {userData ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar className="border-foreground">
               <AvatarFallback>
-                {user?.slice(0, 2).toLocaleUpperCase()}
+                {userData?.slice(0, 2).toLocaleUpperCase()}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>

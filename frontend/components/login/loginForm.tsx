@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { login } from '@/lib/actions/auth/login';
+import { loginUser } from '@/lib/actions/auth/login';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
@@ -22,6 +22,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '../icons';
 import { useState } from 'react';
+import { useAuth } from '@/providers/authProvider';
 
 const formSchema = z.object({
   email: z.string().email('El formato del mail ingresado es incorrecto.'),
@@ -41,13 +42,17 @@ const LoginForm = () => {
 
   const { toast } = useToast();
   const router = useRouter();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleLogin = (token: string, userData: string) => {
+    login(token, userData);
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const userData = await login(values);
+    const userData = await loginUser(values);
     if (userData?.token) {
-      localStorage.setItem('token', userData.token);
-      localStorage.setItem('email', userData.email);
+      handleLogin(userData.token, userData.email);
       router.push('/');
     } else {
       toast({

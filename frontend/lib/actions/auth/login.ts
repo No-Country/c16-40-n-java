@@ -5,7 +5,7 @@ interface loginForm {
   password: string;
 }
 
-export async function login(formData: loginForm) {
+export async function loginUser(formData: loginForm) {
   try {
     const response = await fetch(`${process.env.API_URL}/auth/login`, {
       method: 'POST',

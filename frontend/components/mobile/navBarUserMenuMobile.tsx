@@ -1,28 +1,18 @@
 'use client';
 
+import { useAuth } from '@/providers/authProvider';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 const NavBarUserMenuMobile = () => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const [user, setUser] = useState(
-    typeof window !== 'undefined' ? localStorage.getItem('email') : null
-  );
+  const { userData, logout } = useAuth();
 
   const handleLogOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
-    setUser(null);
+    logout();
   };
 
   return (
     <>
-      {isClient && user ? (
+      {userData ? (
         <>
           <p
             className="hover:underline underline-offset-2"
@@ -30,7 +20,7 @@ const NavBarUserMenuMobile = () => {
           >
             Cerrar sesión
           </p>
-          <p className="mt-auto font-semibold">{user}</p>
+          <p className="mt-auto font-semibold">{userData}</p>
         </>
       ) : (
         <Link href={'/login'}>Iniciar sesión</Link>
