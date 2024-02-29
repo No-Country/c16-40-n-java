@@ -62,6 +62,7 @@ const RegisterForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const confirmation = await register(values);
@@ -195,16 +196,16 @@ const RegisterForm = () => {
               <FormControl>
                 <div className="relative">
                   <Input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? 'text' : 'password'}
                     className="border-none  bg-zinc-300"
                     placeholder="Confirmar contraseña"
                     {...field}
                   />
                   <div
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showPassword ? <Icons.Eye /> : <Icons.EyeOff />}
+                    {showConfirmPassword ? <Icons.Eye /> : <Icons.EyeOff />}
                   </div>
                 </div>
               </FormControl>
