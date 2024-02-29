@@ -1,6 +1,7 @@
 package com.colaborapp.service.impl;
 
 import com.colaborapp.dto.UserRequestDTO;
+import com.colaborapp.dto.UserResponseDTO;
 import com.colaborapp.dto.VolunteerRequestDTO;
 import com.colaborapp.model.Project;
 import com.colaborapp.model.Role;
@@ -12,12 +13,14 @@ import com.colaborapp.repository.UserRepository;
 import com.colaborapp.service.*;
 import com.colaborapp.utils.RoleFactory;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.Objects;
 
@@ -72,5 +75,15 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for email %s".formatted(email)));
+    }
+
+    @Override
+    public UserResponseDTO fetchUserDataWithRelatedProjects(Long id) {
+        if (Objects.isNull(id)) {
+            throw new RequiredObjectException("User ID can't be null.");
+        }
+        return userRepository.findById(id)
+                .map(userMapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("User not found for ID '%s'.".formatted(id)));
     }
 }

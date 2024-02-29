@@ -1,5 +1,6 @@
 package com.colaborapp.model.mapper.impl;
 
+import com.colaborapp.dto.ProjectInfoDTO;
 import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.dto.UserResponseDTO;
@@ -36,6 +37,22 @@ public class ProjectMapperImpl implements ProjectMapper {
                         .lastName(creator.getLastName())
                         .email(creator.getEmail())
                         .build())
+                .category(entity.getCategory().getType())
+                .title(entity.getTitle())
+                .description(entity.getDescription())
+                .image(entity.getImage())
+                .status(entity.getStatus())
+                .goalAmount(entity.getGoalAmount())
+                .currentAmount(entity.getCurrentAmount())
+                .startDate(entity.getStartDate())
+                .endDate(entity.getEndDate())
+                .build();
+    }
+
+    @Override
+    public ProjectInfoDTO toBasicDTO(Project entity) {
+        return ProjectInfoDTO.builder()
+                .id(entity.getId())
                 .category(entity.getCategory().getType())
                 .title(entity.getTitle())
                 .description(entity.getDescription())

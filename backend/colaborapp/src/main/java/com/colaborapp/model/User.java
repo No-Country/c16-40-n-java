@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,6 +35,16 @@ public class User {
     private boolean enable;
     @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
     private Set<Project> projects;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Volunteer> volunteeringList;
+
+    public Set<Project> getProjects() {
+        return Objects.isNull(this.projects) ? new HashSet<>() : this.projects;
+    }
+
+    public Set<Volunteer> getVolunteeringList() {
+        return Objects.isNull(this.volunteeringList) ? new HashSet<>() : this.volunteeringList;
+    }
 
     public void setName(String name) {
         if (!Objects.equals(name, this.name) && Objects.nonNull(name) && !name.trim().isEmpty()) {

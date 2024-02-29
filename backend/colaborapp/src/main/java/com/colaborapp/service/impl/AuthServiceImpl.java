@@ -35,9 +35,11 @@ public class AuthServiceImpl implements AuthService {
                 .password(user.getPassword())
                 .authorities(new SimpleGrantedAuthority(user.getRole().getType().getFullRoleName()))
                 .build();
+        String token = jwtService.generateToken(userDetails);
         return AuthResponseDTO.builder()
                 .email(userDetails.getUsername())
-                .token(jwtService.generateToken(userDetails))
+                .token(token)
+                .expirationDate(jwtService.getExpirationDate(token))
                 .build();
     }
 

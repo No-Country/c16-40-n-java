@@ -35,9 +35,9 @@ public class Project {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String image;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
     @Column(nullable = false, name = "GOAL_AMOUNT")
     private Double goalAmount;
