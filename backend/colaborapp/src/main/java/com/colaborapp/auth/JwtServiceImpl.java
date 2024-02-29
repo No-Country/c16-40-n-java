@@ -25,7 +25,7 @@ public class JwtServiceImpl implements JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(ApiUtil.VALID_TOKEN_TIME)
+                .expiration(ApiUtil.TEST_TOKEN_TIME)
                 .signWith(getSignKey(), Jwts.SIG.HS256)
                 .compact();
     }
