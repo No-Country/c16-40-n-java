@@ -86,13 +86,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectResponseDTO> getAllActiveProjects() {
-        return projectRepository.findAll()
-                .stream()
-                .filter(project -> project.getEndDate().isAfter(LocalDate.now()) &&
-                        project.getStatus().equals(Status.ACTIVE) &&
-                        project.getCreator().isEnable())
-                .map(projectMapper::toDTO)
-                .toList();
+        return projectRepository.findAllByStatusAndEndDateAfter(Status.ACTIVE, LocalDate.now())
+                .stream().map(projectMapper::toDTO).toList();
     }
 
     @Override
