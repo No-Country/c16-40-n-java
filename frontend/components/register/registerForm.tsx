@@ -18,6 +18,8 @@ import { register } from '@/lib/actions/auth/register';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { useState } from 'react';
+import { Icons } from '@/components/icons';
 
 const formSchema = z
   .object({
@@ -59,6 +61,7 @@ const RegisterForm = () => {
 
   const { toast } = useToast();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const confirmation = await register(values);
@@ -164,11 +167,20 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input
-                  className="border-none bg-zinc-300"
-                  placeholder="Contraseña"
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    className="border-none  bg-zinc-300"
+                    placeholder="Contraseña"
+                    {...field}
+                  />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <Icons.Eye /> : <Icons.EyeOff />}
+                  </div>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -181,11 +193,20 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Confirmar contraseña</FormLabel>
               <FormControl>
-                <Input
-                  className="border-none bg-zinc-300"
-                  placeholder="Confirmar contraseña"
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    className="border-none  bg-zinc-300"
+                    placeholder="Confirmar contraseña"
+                    {...field}
+                  />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <Icons.Eye /> : <Icons.EyeOff />}
+                  </div>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

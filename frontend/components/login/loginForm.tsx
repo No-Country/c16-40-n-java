@@ -20,6 +20,8 @@ import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
+import { Icons } from '../icons';
+import { useState } from 'react';
 
 const formSchema = z.object({
   email: z.string().email('El formato del mail ingresado es incorrecto.'),
@@ -39,6 +41,7 @@ const LoginForm = () => {
 
   const { toast } = useToast();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const userData = await login(values);
@@ -84,16 +87,27 @@ const LoginForm = () => {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input
-                  className="border-none  bg-zinc-300"
-                  placeholder="Contraseña"
-                  {...field}
-                />
+                <div className="relative">
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    className="border-none  bg-zinc-300"
+                    placeholder="Contraseña"
+                    {...field}
+                  />
+                  <div
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <Icons.Eye /> : <Icons.EyeOff />}
+                  </div>
+                </div>
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
         />
+
         <p className="mt-0 text-sm hover:underline underline-offset-2 cursor-pointer">
           Olvidaste la contraseña?
         </p>

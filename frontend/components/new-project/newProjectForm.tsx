@@ -34,12 +34,12 @@ const formSchema = z.object({
   description: z.string().min(20, {
     message: 'La descripción debe contener al menos 20 caracteres',
   }),
-  image: z.string(),
+  image: z.string({ required_error: 'La imagen es requerida' }),
   goalAmount: z.coerce
     .number()
     .min(1000, { message: 'El monto mínimo es de 1.000 ARS' })
     .max(10000000, { message: 'El monto máximo es de 10.000.000 ARS' }),
-  categoryType: z.string(),
+  categoryType: z.string({ required_error: 'La categoría es requerida' }),
   endDate: z.date({
     required_error: 'La fecha de finalización es requerida.',
   }),
