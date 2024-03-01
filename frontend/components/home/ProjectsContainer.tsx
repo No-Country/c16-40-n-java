@@ -12,7 +12,6 @@ import { getAllProjects } from '@/lib/actions/project/getAllProjects';
 
 const ProjectsContainer = async () => {
   const projects = await getAllProjects();
-
   return (
     <section className="w-full flex flex-col p-5">
       <div className="pb-5">

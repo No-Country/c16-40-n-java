@@ -1,5 +1,7 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
+
 interface createProjectForm {
   title: string;
   description: string;
@@ -24,6 +26,9 @@ export async function createProject(
       body: JSON.stringify({ ...formData }),
     });
     const result = await response.json();
+    if (result) {
+      revalidateTag('allProjects');
+    }
     return result;
   } catch (error) {
     console.log(error);

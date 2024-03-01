@@ -23,12 +23,13 @@ interface projects {
 export async function getAllProjects() {
   try {
     const response = await fetch(`${process.env.API_URL}/projects/actives`, {
+      next: { tags: ['allProjects'] },
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const result = await response.json();
+    const result : projects[] = await response.json();
     return result;
   } catch (error) {
     console.log(error);
