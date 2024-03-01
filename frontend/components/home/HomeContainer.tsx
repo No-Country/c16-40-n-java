@@ -1,6 +1,5 @@
-import { Button } from '@/components/ui/button';
 import ProjectsContainer from '@/components/home/ProjectsContainer';
-import Link from 'next/link';
+import CreateNewProjectButton from './CreateNewProjectButton';
 
 const HomeContainer = () => {
   return (
@@ -11,11 +10,7 @@ const HomeContainer = () => {
             Tu <span className="text-primary">apoyo</span> hace{' '}
             <span className="text-primary">lo imposible.</span>
           </p>
-          <Link href={'/new-project'}>
-            <Button className="font-bold w-72 lg:w-96 h-12 rounded-full lg:text-2xl">
-              Comienza tu proyecto!
-            </Button>
-          </Link>
+          <CreateNewProjectButton />
         </section>
       </div>
       <ProjectsContainer />
