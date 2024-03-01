@@ -25,7 +25,6 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Icons } from '../icons';
-import { useState } from 'react';
 import { useAuth } from '@/providers/authProvider';
 
 const formSchema = z.object({
@@ -40,6 +39,9 @@ const formSchema = z.object({
     .number()
     .min(1000, { message: 'El monto mínimo es de 1.000 ARS' })
     .max(10000000, { message: 'El monto máximo es de 10.000.000 ARS' }),
+  province: z.string(),
+  locality: z.string(),
+  address: z.string(),
   categoryType: z.string({ required_error: 'La categoría es requerida' }),
   endDate: z.date({
     required_error: 'La fecha de finalización es requerida.',
@@ -56,6 +58,9 @@ const NewProjectForm = () => {
       goalAmount: 1000,
       categoryType: undefined,
       endDate: undefined,
+      province: '',
+      locality: '',
+      address: '',
     },
   });
 
@@ -91,27 +96,24 @@ const NewProjectForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex flex-col justify-between gap-5 w-full">
-          <div>
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Titulo</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="border-none bg-zinc-300"
-                      placeholder="Titulo"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <CategorySelect form={form} />
-          </div>
+        <div className="flex flex-col justify-between gap-2 w-full">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Titulo</FormLabel>
+                <FormControl>
+                  <Input
+                    className="border border-foreground bg-white rounded-sm"
+                    placeholder="Titulo"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="description"
@@ -120,10 +122,33 @@ const NewProjectForm = () => {
                 <FormLabel>Descripción</FormLabel>
                 <FormControl>
                   <Input
-                    className="border-none bg-zinc-300"
+                    className="border border-foreground bg-white rounded-sm"
                     placeholder="Descripción"
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="goalAmount"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Monto a alcanzar</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      type="number"
+                      className="border border-foreground bg-white rounded-sm"
+                      placeholder="Monto a alcanzar"
+                      {...field}
+                    />
+                    <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 z-10 bg-white border border-t-foreground border-b-foreground border-l-transparent border-r-foreground rounded-r-sm">
+                      ARS
+                    </span>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -137,7 +162,7 @@ const NewProjectForm = () => {
                 <FormLabel>Imagen</FormLabel>
                 <FormControl>
                   <Input
-                    className="border-none bg-zinc-300"
+                    className="border border-foreground bg-white rounded-sm"
                     placeholder="Dirección URL de la imagen"
                     {...field}
                   />
@@ -146,19 +171,52 @@ const NewProjectForm = () => {
               </FormItem>
             )}
           />
-        </div>
-        <div className="flex justify-between gap-5 w-full">
+          <div className="flex justify-between gap-4 w-full">
+            <FormField
+              control={form.control}
+              name="province"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Provincia</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="border border-foreground bg-white rounded-sm"
+                      placeholder="Provincia"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="locality"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Localidad</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="border border-foreground bg-white rounded-sm"
+                      placeholder="Localidad"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
-            name="goalAmount"
+            name="address"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Monto a alcanzar</FormLabel>
+                <FormLabel>Dirección</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    className="border-none bg-zinc-300"
-                    placeholder="Monto a alcanzar"
+                    className="border border-foreground bg-white rounded-sm"
+                    placeholder="Dirección"
                     {...field}
                   />
                 </FormControl>
@@ -170,7 +228,7 @@ const NewProjectForm = () => {
             control={form.control}
             name="endDate"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex flex-col w-full">
                 <FormLabel>Fecha de finalización</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -178,8 +236,9 @@ const NewProjectForm = () => {
                       <Button
                         variant={'outline'}
                         className={cn(
-                          'w-[240px] pl-3 text-left font-normal',
-                          !field.value && 'border-none bg-zinc-300'
+                          'w-full pl-3 text-left font-normal border border-foreground bg-white rounded-sm',
+                          !field.value &&
+                            'border border-foreground bg-white rounded-sm'
                         )}
                       >
                         {field.value ? (
@@ -187,7 +246,7 @@ const NewProjectForm = () => {
                         ) : (
                           <span>Selecciona una fecha</span>
                         )}
-                        <Icons.Calendar className="ml-auto h-4 w-4 opacity-50" />
+                        <Icons.Calendar className="ml-auto h-4 w-4" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -206,6 +265,7 @@ const NewProjectForm = () => {
               </FormItem>
             )}
           />
+          <CategorySelect form={form} />
         </div>
         <div className="w-full flex items-center">
           <Button type="submit" className="w-3/4 h-16 m-auto rounded-full">
