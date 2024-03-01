@@ -23,7 +23,7 @@ const NavbarUserMenu = () => {
       {userData ? (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar className="border-foreground">
+            <Avatar className="border-2 border-foreground font-medium">
               <AvatarFallback>
                 {userData?.slice(0, 2).toLocaleUpperCase()}
               </AvatarFallback>
