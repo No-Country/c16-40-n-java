@@ -49,7 +49,7 @@ const ProjectCard = ({ data }: Props) => {
             )}
           </div>
           <div>
-            <CardDescription className="text-foreground line-clamp-3">
+            <CardDescription className="px-5 py-2 text-foreground line-clamp-3">
               {data.description}
             </CardDescription>
           </div>
