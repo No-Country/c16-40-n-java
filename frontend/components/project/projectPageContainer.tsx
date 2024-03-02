@@ -15,7 +15,10 @@ const ProjectPageContainer = async ({ projectId }: Props) => {
   return (
     <section className="flex flex-col items-center h-full">
       <div className="w-full py-10 mt-24 lg:mt-32 mb-10">
-        <CreatorOptions projectId={selectedProject?.id} />
+        <CreatorOptions
+          projectId={selectedProject?.id}
+          projectOwner={selectedProject?.creator.email}
+        />
         <div className="bg-[#d9d9d9] p-5 m-auto w-[95%] lg:w-5/6 rounded-lg">
           <h2 className="text-xl lg:text-3xl text-start font-semibold">
             {selectedProject?.title}

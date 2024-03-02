@@ -10,10 +10,11 @@ import { useRouter } from 'next/navigation';
 
 interface Props {
   projectId: number | undefined;
+  projectOwner: string | undefined;
 }
 
-const CreatorOptions = ({ projectId }: Props) => {
-  const { token } = useAuth();
+const CreatorOptions = ({ projectId, projectOwner }: Props) => {
+  const { token, userData } = useAuth();
   const router = useRouter();
   const [isLoading, setLoading] = useState(true);
 
@@ -26,11 +27,15 @@ const CreatorOptions = ({ projectId }: Props) => {
     console.log('DELETING...');
   };
 
+  const isCreator = () => {
+    return userData === projectOwner && token;
+  };
+
   if (isLoading) return <></>;
 
   return (
     <>
-      {projectId && token && (
+      {isCreator() && projectId && (
         <div className="flex flex-col items-center md:flex-row m-auto w-full md:px-5 lg:px-0 lg:w-5/6 rounded-lg gap-5 md:gap-0 pb-10">
           <p className="flex items-center gap-1 text-sm lg:text-base">
             <Icons.Eye /> De esta manera visualizan otros tu proyecto.
@@ -44,7 +49,7 @@ const CreatorOptions = ({ projectId }: Props) => {
               Editar
             </Button>
             <DeleteButton
-              action={() => handleDeleteProject(projectId, token)}
+              action={() => handleDeleteProject(projectId, token!)}
             />
           </div>
         </div>
