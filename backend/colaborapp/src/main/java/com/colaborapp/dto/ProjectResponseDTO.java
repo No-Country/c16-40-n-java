@@ -1,7 +1,7 @@
 package com.colaborapp.dto;
 
-import com.colaborapp.model.Category;
-import com.colaborapp.model.User;
+import com.colaborapp.model.CategoryType;
+import com.colaborapp.model.Status;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -9,10 +9,10 @@ import java.time.LocalDate;
 @Builder
 public record ProjectResponseDTO (
     Long id,
-    String creator,
-    String category,
+    UserResponseDTO creator,
+    CategoryType category,
     String title,
-    String status,
+    Status status,
     String image,
     String description,
     Double goalAmount,

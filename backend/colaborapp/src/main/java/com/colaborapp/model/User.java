@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -28,28 +31,41 @@ public class User {
     @JoinColumn(name = "ROLE_ID")
     @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
+    @Setter
     private boolean enable;
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
+    private Set<Project> projects;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Volunteer> volunteeringList;
+
+    public Set<Project> getProjects() {
+        return Objects.isNull(this.projects) ? new HashSet<>() : this.projects;
+    }
+
+    public Set<Volunteer> getVolunteeringList() {
+        return Objects.isNull(this.volunteeringList) ? new HashSet<>() : this.volunteeringList;
+    }
 
     public void setName(String name) {
-        if (Objects.nonNull(name) && !name.trim().isEmpty()) {
+        if (!Objects.equals(name, this.name) && Objects.nonNull(name) && !name.trim().isEmpty()) {
             this.name = name;
         }
     }
 
     public void setLastName(String lastName) {
-        if (Objects.nonNull(lastName) && !lastName.trim().isEmpty()) {
+        if (!Objects.equals(lastName, this.lastName) && Objects.nonNull(lastName) && !lastName.trim().isEmpty()) {
             this.lastName = lastName;
         }
     }
 
     public void setEmail(String email) {
-        if (Objects.nonNull(email) && !email.trim().isEmpty()) {
+        if (!Objects.equals(email, this.email) && Objects.nonNull(email) && !email.trim().isEmpty()) {
             this.email = email;
         }
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        if (Objects.nonNull(phoneNumber) && !phoneNumber.trim().isEmpty()) {
+        if (!Objects.equals(phoneNumber, this.phoneNumber) && Objects.nonNull(phoneNumber) && !phoneNumber.trim().isEmpty()) {
             this.phoneNumber = phoneNumber;
         }
     }
@@ -66,8 +82,17 @@ public class User {
         }
     }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, email, phoneNumber, password, role, enable);
     }
 
     public static UserBuilder builder() {

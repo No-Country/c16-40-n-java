@@ -1,13 +1,14 @@
 package com.colaborapp.model.mapper;
 
+import com.colaborapp.dto.ProjectInfoDTO;
 import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.model.Project;
 
 public interface ProjectMapper {
-    Project toProjectEntity(ProjectRequestDTO projectRequestDTO);
+    Project toEntity(ProjectRequestDTO dto);
 
-    ProjectResponseDTO toProjectResponseDto(Project entity);
+    ProjectResponseDTO toDTO(Project entity);
 
-    Project toProjectEntityForUpdate(Project existingProject, ProjectRequestDTO projectRequestDTO);
+    ProjectInfoDTO toBasicDTO(Project entity);
 }
