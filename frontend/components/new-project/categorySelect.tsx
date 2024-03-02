@@ -41,7 +41,9 @@ const CategorySelect = ({ form }: Props) => {
       name="categoryType"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Categoría</FormLabel>
+          <FormLabel>
+            ¿En que categoría se encuentra tu proyecto para recaudar fondos?
+          </FormLabel>
           <FormControl>
             <RadioGroup
               defaultValue={undefined}
@@ -58,7 +60,7 @@ const CategorySelect = ({ form }: Props) => {
                   />
                   <Label
                     htmlFor={category.value}
-                    className="flex flex-col items-center justify-between rounded-md border border-foreground bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer lg:min-w-max"
+                    className="flex flex-col items-center justify-between rounded-md border border-foreground bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer w-36"
                   >
                     {category.name}
                   </Label>

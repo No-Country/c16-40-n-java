@@ -267,9 +267,17 @@ const NewProjectForm = () => {
           />
           <CategorySelect form={form} />
         </div>
-        <div className="w-full flex items-center">
-          <Button type="submit" className="w-3/4 h-16 m-auto rounded-full">
-            CREAR PROYECTO
+        <div className="w-full flex items-center justify-between gap-4 pt-10">
+          <Button
+            type="button"
+            variant={'secondary'}
+            className="w-1/2 h-11 m-auto rounded-sm bg-white border border-foreground text-foreground"
+            onClick={() => router.back()}
+          >
+            Cancelar
+          </Button>
+          <Button type="submit" className="w-1/2 h-11 m-auto rounded-sm">
+            Continuar
           </Button>
         </div>
       </form>
