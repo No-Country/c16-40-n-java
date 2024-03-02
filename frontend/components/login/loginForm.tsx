@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { loginUser } from '@/lib/actions/auth/login';
+import { LoginResponse, loginUser } from '@/lib/actions/auth/login';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
@@ -45,15 +45,15 @@ const LoginForm = () => {
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = (token: string, userData: string) => {
-    login(token, userData);
+  const handleLogin = (userData: LoginResponse) => {
+    login(userData);
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const userData = await loginUser(values);
-    if (userData?.token) {
-      handleLogin(userData.token, userData.email);
-      router.push('/');
+    if (userData && userData !== undefined) {
+      handleLogin(userData);
+      router.back();
     } else {
       toast({
         variant: 'destructive',

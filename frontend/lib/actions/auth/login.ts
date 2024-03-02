@@ -5,6 +5,12 @@ interface loginForm {
   password: string;
 }
 
+export interface LoginResponse {
+  email: string;
+  token: string;
+  expirationDate: string;
+}
+
 export async function loginUser(formData: loginForm) {
   try {
     const response = await fetch(`${process.env.API_URL}/auth/login`, {
@@ -14,8 +20,7 @@ export async function loginUser(formData: loginForm) {
       },
       body: JSON.stringify({ ...formData }),
     });
-    const result = await response.json();
-
+    const result: LoginResponse = await response.json();
     return result;
   } catch (error) {
     console.log(error);
