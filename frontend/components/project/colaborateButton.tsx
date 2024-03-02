@@ -1,7 +1,11 @@
 import { Button } from '@/components/ui/button';
 import LoginAlert from '@/components/loginAlert';
 
-const ColaborateButton = () => {
+interface Props {
+  projectId: number | undefined;
+}
+
+const ColaborateButton = ({ projectId }: Props) => {
   return (
     <LoginAlert>
       <Button

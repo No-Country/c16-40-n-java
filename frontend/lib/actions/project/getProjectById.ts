@@ -1,6 +1,6 @@
 'use server';
 
-interface project {
+export interface project {
   id: number;
   creator: {
     id: number;
