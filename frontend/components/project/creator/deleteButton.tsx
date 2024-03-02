@@ -10,24 +10,53 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { ToastAction } from '@/components/ui/toast';
+import { deleteProject } from '@/lib/actions/project/deleteProject';
+import { useRouter } from 'next/navigation';
 
 interface Props {
-  action: () => Promise<void>;
+  projectId: number;
+  token: string;
 }
 
-const DeleteButton = ({ action }: Props) => {
+const DeleteButton = ({ projectId, token }: Props) => {
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const handleDeleteProject = async (projectId: number, token: string) => {
+    const response = await deleteProject(projectId, token);
+    if (response) {
+      router.push(`/`);
+      return toast({
+        className: 'bg-green-500 text-green-100',
+        title: 'Todo salió bien!',
+        description: 'Se dió de baja exitosamente el proyecto.',
+        action: <ToastAction altText="Ok">Ok</ToastAction>,
+      });
+    } else {
+      return toast({
+        variant: 'destructive',
+        title: '¡Ups! Algo salió mal!',
+        description:
+          'Hubo un problema al intentar dar de baja el proyecto, por favor intente nuevamente.',
+        action: <ToastAction altText="Ok">Ok</ToastAction>,
+      });
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button className="w-36" variant={'destructive'}>
-          Eliminar
+          Dar de baja
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="w-[90%] rounded-lg">
         <AlertDialogHeader>
-          <AlertDialogTitle>Eliminar proyecto</AlertDialogTitle>
+          <AlertDialogTitle>Dar de baja el proyecto</AlertDialogTitle>
           <AlertDialogDescription className="text-foreground">
-            Esta seguro de que desea eliminar el proyecto? Esta acción no se
+            Esta seguro de que desea dar de baja el proyecto? Esta acción no se
             puede desahacer.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -37,9 +66,9 @@ const DeleteButton = ({ action }: Props) => {
           </AlertDialogCancel>
           <AlertDialogAction
             className="bg-destructive text-destructive-foreground hover:bg-red-700"
-            onClick={action}
+            onClick={() => handleDeleteProject(projectId, token)}
           >
-            Eliminar
+            Confirmar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -22,11 +22,6 @@ const CreatorOptions = ({ projectId, projectOwner }: Props) => {
     setLoading(false);
   }, [token]);
 
-  const handleDeleteProject = async (projectId: number, token: string) => {
-    await deleteProject(projectId, token);
-    console.log('DELETING...');
-  };
-
   const isCreator = () => {
     return userData === projectOwner && token;
   };
@@ -48,9 +43,7 @@ const CreatorOptions = ({ projectId, projectOwner }: Props) => {
             >
               Editar
             </Button>
-            <DeleteButton
-              action={() => handleDeleteProject(projectId, token!)}
-            />
+            <DeleteButton projectId={projectId} token={token!} />
           </div>
         </div>
       )}
