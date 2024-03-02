@@ -29,7 +29,7 @@ const LoginAlert = ({ children }: { children: ReactNode }) => {
           <AlertDialogTrigger asChild>
             {Children.toArray(children)[0]}
           </AlertDialogTrigger>
-          <AlertDialogContent>
+          <AlertDialogContent className="w-[90%] rounded-lg">
             <AlertDialogHeader>
               <AlertDialogTitle>{tokenStatus.title}</AlertDialogTitle>
               <AlertDialogDescription>
