@@ -51,9 +51,9 @@ const LoginForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const userData = await loginUser(values);
-    if (userData && userData !== undefined) {
+    if (userData?.email && userData?.token) {
       handleLogin(userData);
-      router.back();
+      router.push('/');
     } else {
       toast({
         variant: 'destructive',
