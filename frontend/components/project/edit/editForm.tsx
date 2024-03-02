@@ -163,6 +163,14 @@ const EditForm = ({ project }: Props) => {
               </FormItem>
             )}
           />
+          <div className="w-full h-48">
+            {project?.image && (
+              <div
+                className="bg-center bg-cover h-full"
+                style={{ backgroundImage: `url(${project.image})` }}
+              />
+            )}
+          </div>
           <FormField
             control={form.control}
             name="image"
