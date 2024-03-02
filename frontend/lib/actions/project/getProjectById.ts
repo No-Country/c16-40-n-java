@@ -18,6 +18,9 @@ export interface project {
   currentAmount: number;
   startDate: string;
   endDate: string;
+  province?: string;
+  locality?: string;
+  address?: string;
 }
 
 export async function getProjectById(id: string) {

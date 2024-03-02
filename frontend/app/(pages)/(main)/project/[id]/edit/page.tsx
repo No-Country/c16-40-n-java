@@ -1,4 +1,6 @@
+import EditContainer from '@/components/project/edit/editContainer';
+
 const EditProjectPage = ({ params }: { params: { id: string } }) => {
-  return <div>EditProjectPage {params.id}</div>;
+  return <EditContainer projectId={params.id} />;
 };
 export default EditProjectPage;

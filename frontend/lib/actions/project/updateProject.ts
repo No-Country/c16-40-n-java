@@ -2,25 +2,39 @@
 
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-export async function deleteProject(projectId: number, token: string) {
+interface createProjectForm {
+  title: string;
+  description: string;
+  image: string;
+  goalAmount: number;
+  categoryType: string;
+  endDate: string;
+}
+
+export async function updateProject(
+  formData: createProjectForm,
+  token: string,
+  projectId: number
+) {
   try {
     const response = await fetch(
       `${process.env.API_URL}/projects/${projectId}`,
       {
-        method: 'DELETE',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+
+        body: JSON.stringify({ ...formData }),
       }
     );
-    const result = response;
-    console.log(result);
-    if (result.status === 204) {
+    const result = await response.json();
+    if (result) {
       revalidatePath(`/project/${projectId}`);
       revalidateTag('allProjects');
     }
-    return result.status === 204;
+    return result;
   } catch (error) {
     console.log(error);
   }

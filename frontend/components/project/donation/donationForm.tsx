@@ -19,12 +19,12 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { createProject } from '@/lib/actions/project/createProject';
 import CategorySelect from '@/components/new-project/categorySelect';
-import { Calendar } from '../ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Calendar } from '../../ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Icons } from '../icons';
+import { Icons } from '../../icons';
 import { useAuth } from '@/providers/authProvider';
 
 const formSchema = z.object({
@@ -34,14 +34,16 @@ const formSchema = z.object({
   description: z.string().min(20, {
     message: 'La descripción debe contener al menos 20 caracteres',
   }),
-  image: z.string({ required_error: 'La imagen es requerida' }),
+  image: z
+    .string({ required_error: 'La imagen es requerida' })
+    .url({ message: 'La dirección url ingresada no es válida' }),
   goalAmount: z.coerce
     .number()
     .min(1000, { message: 'El monto mínimo es de 1.000 ARS' })
     .max(10000000, { message: 'El monto máximo es de 10.000.000 ARS' }),
-  province: z.string(),
-  locality: z.string(),
-  address: z.string(),
+  province: z.string().optional(),
+  locality: z.string().optional(),
+  address: z.string().optional(),
   categoryType: z.string({ required_error: 'La categoría es requerida' }),
   endDate: z.date({
     required_error: 'La fecha de finalización es requerida.',

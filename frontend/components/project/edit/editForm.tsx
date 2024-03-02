@@ -18,14 +18,21 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { createProject } from '@/lib/actions/project/createProject';
-import CategorySelect from './categorySelect';
-import { Calendar } from '../ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import CategorySelect from '@/components/new-project/categorySelect';
+import { Calendar } from '../../ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Icons } from '../icons';
+import { Icons } from '../../icons';
 import { useAuth } from '@/providers/authProvider';
+import { project } from '@/lib/actions/project/getProjectById';
+import { projectsData } from '@/lib/constants';
+import { updateProject } from '@/lib/actions/project/updateProject';
+
+interface Props {
+  project: project;
+}
 
 const formSchema = z.object({
   title: z
@@ -50,19 +57,19 @@ const formSchema = z.object({
   }),
 });
 
-const NewProjectForm = () => {
+const EditForm = ({ project }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      image: '',
-      goalAmount: 1000,
-      categoryType: undefined,
-      endDate: undefined,
-      province: '',
-      locality: '',
-      address: '',
+      title: project.title,
+      description: project.description,
+      image: project.image,
+      goalAmount: project.goalAmount,
+      categoryType: project.category,
+      endDate: new Date(project.endDate),
+      province: project.province,
+      locality: project.locality,
+      address: project.address,
     },
   });
 
@@ -75,13 +82,13 @@ const NewProjectForm = () => {
       ...values,
       endDate: format(values.endDate, 'dd/MM/yyyy'),
     };
-    const projectData = await createProject(valuesFormated, token!);
+    const projectData = await updateProject(valuesFormated, token!, project.id);
     if (projectData) {
       router.push(`/project/${projectData.id}`);
       return toast({
         className: 'bg-green-500 text-green-100',
         title: 'Todo salió bien!',
-        description: 'Se creó exitosamente el proyecto.',
+        description: 'Se editó exitosamente el proyecto.',
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     } else {
@@ -89,7 +96,7 @@ const NewProjectForm = () => {
         variant: 'destructive',
         title: '¡Ups! Algo salió mal!',
         description:
-          'Hubo un problema al intentar crear el proyecto, por favor revise que los datos sean correctos e intente nuevamente.',
+          'Hubo un problema al intentar editar el proyecto, por favor revise que los datos sean correctos e intente nuevamente.',
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     }
@@ -279,11 +286,11 @@ const NewProjectForm = () => {
             Cancelar
           </Button>
           <Button type="submit" className="w-1/2 h-11 m-auto rounded-sm">
-            Continuar
+            Confirmar
           </Button>
         </div>
       </form>
     </Form>
   );
 };
-export default NewProjectForm;
+export default EditForm;
