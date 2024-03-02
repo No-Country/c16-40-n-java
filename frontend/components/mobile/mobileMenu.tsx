@@ -17,6 +17,12 @@ const MobileMenu = () => {
           <Link href={'/'} className="hover:underline underline-offset-2">
             Inicio
           </Link>
+          <Link
+            href={'/projects'}
+            className="hover:underline underline-offset-2"
+          >
+            Proyectos
+          </Link>
           <Link href={'/about'} className="hover:underline underline-offset-2">
             ¿Quiénes somos?
           </Link>

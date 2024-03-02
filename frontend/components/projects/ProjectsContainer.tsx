@@ -13,10 +13,10 @@ import { getAllProjects } from '@/lib/actions/project/getAllProjects';
 const ProjectsContainer = async () => {
   const projects = await getAllProjects();
   return (
-    <section className="w-full flex flex-col p-5">
+    <section className="w-full flex flex-col pt-10">
       <div className="pb-5">
         <h2 className="text-base lg:text-xl font-bold">
-          Descubre proyectos que te inspiren y te impulsen a actuar.
+          Explora todos los proyectos
         </h2>
         <div className="flex py-5 gap-3">
           <div className="relative">
@@ -24,7 +24,7 @@ const ProjectsContainer = async () => {
             <Input
               type="search"
               placeholder="Buscar"
-              className="w-32 lg:w-52 rounded-full bg-white pl-10 border-2 border-foreground"
+              className="w-32 lg:w-52 rounded-full pl-10 border-2 border-foreground bg-white"
             />
           </div>
           <Select>
