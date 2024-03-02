@@ -23,8 +23,8 @@ const ProjectPageContainer = async ({ projectId }: Props) => {
           <h2 className="text-xl lg:text-3xl text-start font-semibold">
             {selectedProject?.title}
           </h2>
-          <div className="flex flex-col lg:flex-row gap-4 py-10">
-            <div className="w-full lg:w-1/2 h-48">
+          <div className="flex flex-col lg:flex-row gap-4 py-10 lg:h-96">
+            <div className="w-full lg:w-1/2 h-64 lg:h-auto">
               {selectedProject?.image && (
                 <div
                   className="bg-center bg-cover h-full rounded-lg"
