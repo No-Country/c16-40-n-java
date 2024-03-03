@@ -1,6 +1,7 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { project } from './getProjectById';
 
 interface createProjectForm {
   title: string;
@@ -25,8 +26,9 @@ export async function createProject(
 
       body: JSON.stringify({ ...formData }),
     });
-    const result = await response.json();
+    const result: project = await response.json();
     if (result) {
+      revalidatePath(`/project/${result.id}`, 'layout');
       revalidateTag('allProjects');
     }
     return result;

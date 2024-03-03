@@ -17,7 +17,7 @@ export async function deleteProject(projectId: number, token: string) {
     const result = response;
     console.log(result);
     if (result.status === 204) {
-      revalidatePath(`/project/${projectId}`);
+      revalidatePath(`/project/${projectId}`, 'layout');
       revalidateTag('allProjects');
     }
     return result.status === 204;
