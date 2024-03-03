@@ -42,8 +42,8 @@ const formSchema = z.object({
     .min(1000, { message: 'El monto mínimo es de 1.000 ARS' })
     .max(10000000, { message: 'El monto máximo es de 10.000.000 ARS' }),
   province: z.string().optional(),
-  locality: z.string().optional(),
-  address: z.string().optional(),
+  city: z.string().optional(),
+  street: z.string().optional(),
   categoryType: z.string({ required_error: 'La categoría es requerida' }),
   endDate: z.date({
     required_error: 'La fecha de finalización es requerida.',
@@ -61,8 +61,8 @@ const NewProjectForm = () => {
       categoryType: undefined,
       endDate: undefined,
       province: '',
-      locality: '',
-      address: '',
+      city: '',
+      street: '',
     },
   });
 
@@ -193,7 +193,7 @@ const NewProjectForm = () => {
             />
             <FormField
               control={form.control}
-              name="locality"
+              name="city"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Localidad</FormLabel>
@@ -211,7 +211,7 @@ const NewProjectForm = () => {
           </div>
           <FormField
             control={form.control}
-            name="address"
+            name="street"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Dirección</FormLabel>

@@ -19,8 +19,8 @@ export interface project {
   startDate: string;
   endDate: string;
   province?: string;
-  locality?: string;
-  address?: string;
+  city?: string;
+  street?: string;
 }
 
 export async function getProjectById(id: string) {

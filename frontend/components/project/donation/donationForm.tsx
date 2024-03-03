@@ -20,14 +20,6 @@ import { ToastAction } from '@/components/ui/toast';
 import { Icons } from '../../icons';
 import { useAuth } from '@/providers/authProvider';
 import { project } from '@/lib/actions/project/getProjectById';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import {
@@ -48,8 +40,8 @@ const formSchema = z.object({
     .min(1000, { message: 'El monto mínimo es de 1.000 ARS' })
     .max(10000000, { message: 'El monto máximo es de 10.000.000 ARS' }),
   province: z.string().optional(),
-  locality: z.string().optional(),
-  address: z.string().optional(),
+  city: z.string().optional(),
+  street: z.string().optional(),
   categoryType: z.string({ required_error: 'La categoría es requerida' }),
   endDate: z.date({
     required_error: 'La fecha de finalización es requerida.',
@@ -64,8 +56,8 @@ const DonationForm = ({ project }: Props) => {
       categoryType: undefined,
       endDate: undefined,
       province: '',
-      locality: '',
-      address: '',
+      city: '',
+      street: '',
     },
   });
 

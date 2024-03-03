@@ -17,8 +17,8 @@ interface Props {
       image: string;
       goalAmount: number;
       province?: string;
-      locality?: string;
-      address?: string;
+      city?: string;
+      street?: string;
       categoryType: string;
       endDate: Date;
     },
