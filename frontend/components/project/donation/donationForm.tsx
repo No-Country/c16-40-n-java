@@ -17,27 +17,33 @@ import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
-import { createProject } from '@/lib/actions/project/createProject';
-import CategorySelect from '@/components/new-project/categorySelect';
-import { Calendar } from '../../ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
 import { Icons } from '../../icons';
 import { useAuth } from '@/providers/authProvider';
+import { project } from '@/lib/actions/project/getProjectById';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
+
+interface Props {
+  project: project;
+}
 
 const formSchema = z.object({
-  title: z
-    .string()
-    .min(10, { message: 'El titulo debe contener al menos 10 caracteres' }),
-  description: z.string().min(20, {
-    message: 'La descripción debe contener al menos 20 caracteres',
-  }),
-  image: z
-    .string({ required_error: 'La imagen es requerida' })
-    .url({ message: 'La dirección url ingresada no es válida' }),
-  goalAmount: z.coerce
+  amount: z.coerce
     .number()
     .min(1000, { message: 'El monto mínimo es de 1.000 ARS' })
     .max(10000000, { message: 'El monto máximo es de 10.000.000 ARS' }),
@@ -50,14 +56,11 @@ const formSchema = z.object({
   }),
 });
 
-const DonationForm = () => {
+const DonationForm = ({ project }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      image: '',
-      goalAmount: 1000,
+      amount: 0,
       categoryType: undefined,
       endDate: undefined,
       province: '',
@@ -71,13 +74,8 @@ const DonationForm = () => {
   const { token } = useAuth();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const valuesFormated = {
-      ...values,
-      endDate: format(values.endDate, 'dd/MM/yyyy'),
-    };
-    const projectData = await createProject(valuesFormated, token!);
-    if (projectData) {
-      router.push(`/project/${projectData.id}`);
+    if (values) {
+      router.push(`/project/${project.id}`);
       return toast({
         className: 'bg-green-500 text-green-100',
         title: 'Todo salió bien!',
@@ -101,52 +99,21 @@ const DonationForm = () => {
         <div className="flex flex-col justify-between gap-2 w-full">
           <FormField
             control={form.control}
-            name="title"
+            name="amount"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Titulo</FormLabel>
-                <FormControl>
-                  <Input
-                    className="border border-foreground bg-white rounded-sm"
-                    placeholder="Titulo"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Descripción</FormLabel>
-                <FormControl>
-                  <Input
-                    className="border border-foreground bg-white rounded-sm"
-                    placeholder="Descripción"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="goalAmount"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Monto a alcanzar</FormLabel>
+                <FormLabel>Indica el monto</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type="number"
-                      className="border border-foreground bg-white rounded-sm"
-                      placeholder="Monto a alcanzar"
+                      className="border border-foreground bg-white rounded-sm pl-8"
+                      placeholder="Indica el monto"
                       {...field}
                     />
+                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-sm leading-5 z-10 bg-white border border-t-foreground border-b-foreground border-r-transparent border-l-foreground rounded-l-sm">
+                      $
+                    </span>
                     <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 z-10 bg-white border border-t-foreground border-b-foreground border-l-transparent border-r-foreground rounded-r-sm">
                       ARS
                     </span>
@@ -156,118 +123,126 @@ const DonationForm = () => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Imagen</FormLabel>
-                <FormControl>
-                  <Input
-                    className="border border-foreground bg-white rounded-sm"
-                    placeholder="Dirección URL de la imagen"
-                    {...field}
+          <section>
+            <div>
+              <h2 className="py-2 font-medium">Metodo de pago</h2>
+            </div>
+            <div className="grid gap-6">
+              <RadioGroup
+                defaultValue="card"
+                className="grid grid-cols-3 gap-4"
+              >
+                <div>
+                  <RadioGroupItem
+                    value="card"
+                    id="card"
+                    className="peer sr-only"
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex justify-between gap-4 w-full">
-            <FormField
-              control={form.control}
-              name="province"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Provincia</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="border border-foreground bg-white rounded-sm"
-                      placeholder="Provincia"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="locality"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Localidad</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="border border-foreground bg-white rounded-sm"
-                      placeholder="Localidad"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Dirección</FormLabel>
-                <FormControl>
-                  <Input
-                    className="border border-foreground bg-white rounded-sm"
-                    placeholder="Dirección"
-                    {...field}
+                  <Label
+                    htmlFor="card"
+                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="mb-3 h-6 w-6"
+                    >
+                      <rect width="20" height="14" x="2" y="5" rx="2" />
+                      <path d="M2 10h20" />
+                    </svg>
+                    Card
+                  </Label>
+                </div>
+                <div>
+                  <RadioGroupItem
+                    value="paypal"
+                    id="paypal"
+                    className="peer sr-only"
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              <FormItem className="flex flex-col w-full">
-                <FormLabel>Fecha de finalización</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={'outline'}
-                        className={cn(
-                          'w-full pl-3 text-left font-normal border border-foreground bg-white rounded-sm',
-                          !field.value &&
-                            'border border-foreground bg-white rounded-sm'
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, 'dd/MM/yyyy')
-                        ) : (
-                          <span>Selecciona una fecha</span>
-                        )}
-                        <Icons.Calendar className="ml-auto h-4 w-4" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => date < new Date()}
-                      initialFocus
-                      locale={es}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <CategorySelect form={form} />
+                  <Label
+                    htmlFor="paypal"
+                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                  >
+                    <Icons.Calendar className="mb-3 h-6 w-6" />
+                    Paypal
+                  </Label>
+                </div>
+                <div>
+                  <RadioGroupItem
+                    value="apple"
+                    id="apple"
+                    className="peer sr-only"
+                  />
+                  <Label
+                    htmlFor="apple"
+                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                  >
+                    <Icons.AppLogo className="mb-3 h-6 w-6" />
+                    Apple
+                  </Label>
+                </div>
+              </RadioGroup>
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" placeholder="First Last" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="number">Card number</Label>
+                <Input id="number" placeholder="" />
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="month">Expires</Label>
+                  <Select>
+                    <SelectTrigger id="month">
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">Enero</SelectItem>
+                      <SelectItem value="2">Febrero</SelectItem>
+                      <SelectItem value="3">Marzo</SelectItem>
+                      <SelectItem value="4">Abril</SelectItem>
+                      <SelectItem value="5">Mayo</SelectItem>
+                      <SelectItem value="6">Junio</SelectItem>
+                      <SelectItem value="7">Julio</SelectItem>
+                      <SelectItem value="8">Agosto</SelectItem>
+                      <SelectItem value="9">Septiembre</SelectItem>
+                      <SelectItem value="10">Octubre</SelectItem>
+                      <SelectItem value="11">Noviembre</SelectItem>
+                      <SelectItem value="12">Diciembre</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="year">Año</Label>
+                  <Select>
+                    <SelectTrigger id="year">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 10 }, (_, i) => (
+                        <SelectItem
+                          key={i}
+                          value={`${new Date().getFullYear() + i}`}
+                        >
+                          {new Date().getFullYear() + i}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="cvc">CVC</Label>
+                  <Input id="cvc" placeholder="CVC" />
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
         <div className="w-full flex items-center justify-between gap-4 pt-10">
           <Button
@@ -279,7 +254,7 @@ const DonationForm = () => {
             Cancelar
           </Button>
           <Button type="submit" className="w-1/2 h-11 m-auto rounded-sm">
-            Continuar
+            Donar ahora
           </Button>
         </div>
       </form>
