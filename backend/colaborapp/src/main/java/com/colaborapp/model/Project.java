@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.DateTimeException;
@@ -17,7 +16,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE colaborapp.project SET status='DELETED' WHERE id=?")
 @SQLRestriction(value = "status <> 'DELETED'")
 public class Project {
     // Getters
@@ -47,6 +45,9 @@ public class Project {
     private LocalDate startDate;
     @Column(nullable = false, name = "END_DATE")
     private LocalDate endDate;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     // Setters
     public void setCreator(User creator) {
@@ -103,6 +104,12 @@ public class Project {
     public void setStartDate(LocalDate startDate) {
         if (Objects.nonNull(startDate)) {
             this.startDate = startDate;
+        }
+    }
+
+    public void setAddress(Address address) {
+        if (Objects.nonNull(address)) {
+            this.address = address;
         }
     }
 

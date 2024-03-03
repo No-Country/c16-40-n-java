@@ -6,14 +6,9 @@ import com.colaborapp.model.*;
 import com.colaborapp.model.exception.RequiredObjectException;
 import com.colaborapp.model.mapper.ProjectMapper;
 import com.colaborapp.repository.ProjectRepository;
-import com.colaborapp.service.AuthService;
-import com.colaborapp.service.CategoryService;
-import com.colaborapp.service.ProjectService;
-import com.colaborapp.service.UserService;
+import com.colaborapp.service.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +19,9 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
+    private final AddressService addressService;
     private final ProjectMapper projectMapper;
     private final UserService userService;
     private final CategoryService categoryService;
@@ -36,6 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectResponseDTO createProject(ProjectRequestDTO request) {
         User user = userService.getUserByEmailFromDatabase(authService.getAuthenticatedUsername());
         CategoryType categoryType = CategoryType.getCategoryTypeFromString(request.categoryType());
+        Address address = addressService.createNewAddress(request.address());
         Category category = categoryService.getCategoryByType(categoryType);
         Project project = projectMapper.toEntity(request);
         project.setCreator(user);
@@ -44,8 +40,8 @@ public class ProjectServiceImpl implements ProjectService {
         project.setEndDate(request.endDate());
         project.setStatus(Status.ACTIVE);
         project.setCurrentAmount(0.0);
+        project.setAddress(address);
         projectRepository.save(project);
-        log.info("Username authenticated: {}", SecurityContextHolder.getContext().getAuthentication().getName());
         return projectMapper.toDTO(project);
     }
 
@@ -69,6 +65,8 @@ public class ProjectServiceImpl implements ProjectService {
         projectToUpdate.setDescription(updateRequest.description());
         projectToUpdate.setGoalAmount(updateRequest.goalAmount());
         projectToUpdate.setEndDate(updateRequest.endDate());
+        // updates the Address info
+        addressService.updateAddress(projectToUpdate.getAddress(), updateRequest.address());
         return projectMapper.toDTO(projectRepository.save(projectToUpdate));
     }
 
@@ -109,6 +107,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (!project.getCreator().getEmail().equals(authService.getAuthenticatedUsername())) {
             throw new RequestRejectedException("Trying to modify a not owned project.");
         }
-        projectRepository.delete(project);
+        project.setStatus(Status.DELETED);
+        projectRepository.save(project);
     }
 }
