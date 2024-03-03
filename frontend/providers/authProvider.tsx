@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     if (tokenExpirationDate) {
       const expirationDate = new Date(tokenExpirationDate);
-      if (expirationDate.toUTCString() < new Date().toUTCString()) {
+      if (expirationDate.getTime() < new Date().getTime()) {
         logout();
         return {
           title: 'La sesión ha expirado.',
@@ -84,8 +84,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const checkTokenExpiration = () => {
       if (tokenExpirationDate) {
         const expirationDate = new Date(tokenExpirationDate);
-
-        if (expirationDate.toUTCString() < new Date().toUTCString()) {
+        if (expirationDate.getTime() < new Date().getTime()) {
+          console.log('El token ha expirado.');
           logout();
         }
       }
