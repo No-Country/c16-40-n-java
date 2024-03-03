@@ -1,6 +1,7 @@
 package com.colaborapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 
@@ -26,6 +27,9 @@ public record ProjectRequestDTO(
         Double goalAmount,
         @NotNull(message = "End date is required")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-        LocalDate endDate
+        LocalDate endDate,
+        @NotNull(message = "Address details is required")
+        @Valid
+        AddressRequestDTO address
 ) {
 }

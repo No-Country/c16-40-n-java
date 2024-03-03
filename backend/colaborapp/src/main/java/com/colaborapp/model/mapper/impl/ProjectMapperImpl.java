@@ -1,9 +1,6 @@
 package com.colaborapp.model.mapper.impl;
 
-import com.colaborapp.dto.ProjectInfoDTO;
-import com.colaborapp.dto.ProjectRequestDTO;
-import com.colaborapp.dto.ProjectResponseDTO;
-import com.colaborapp.dto.UserResponseDTO;
+import com.colaborapp.dto.*;
 import com.colaborapp.model.Project;
 import com.colaborapp.model.User;
 import com.colaborapp.model.mapper.ProjectMapper;
@@ -46,6 +43,13 @@ public class ProjectMapperImpl implements ProjectMapper {
                 .currentAmount(entity.getCurrentAmount())
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
+                .address(AddressResponseDTO.builder()
+                        .id(entity.getAddress().getId())
+                        .province(entity.getAddress().getProvince())
+                        .city(entity.getAddress().getCity())
+                        .street(entity.getAddress().getStreet())
+                        .number(entity.getAddress().getNumber())
+                        .build())
                 .build();
     }
 
@@ -62,6 +66,13 @@ public class ProjectMapperImpl implements ProjectMapper {
                 .currentAmount(entity.getCurrentAmount())
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
+                .address(AddressResponseDTO.builder()
+                        .id(entity.getAddress().getId())
+                        .province(entity.getAddress().getProvince())
+                        .city(entity.getAddress().getCity())
+                        .street(entity.getAddress().getStreet())
+                        .number(entity.getAddress().getNumber())
+                        .build())
                 .build();
     }
 }
