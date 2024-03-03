@@ -1,4 +1,6 @@
+import AboutPageContainer from '@/components/about/aboutPageContainer';
+
 const AboutPage = () => {
-  return <div>AboutPage</div>;
+  return <AboutPageContainer />;
 };
 export default AboutPage;
