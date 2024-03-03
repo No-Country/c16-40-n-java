@@ -28,7 +28,7 @@ export async function createProject(
     });
     const result: project = await response.json();
     if (result) {
-      revalidatePath(`/project/${result.id}`, 'layout');
+      revalidatePath('/(pages)/(main)/project/[id]', 'layout');
       revalidateTag('allProjects');
     }
     return result;

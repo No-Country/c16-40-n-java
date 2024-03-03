@@ -31,7 +31,7 @@ export async function updateProject(
     );
     const result = await response.json();
     if (result) {
-      revalidatePath(`/project/${projectId}`, 'layout');
+      revalidatePath('/(pages)/(main)/project/[id]', 'layout');
       revalidateTag('allProjects');
     }
     return result;
