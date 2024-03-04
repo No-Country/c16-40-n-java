@@ -1,6 +1,5 @@
 package com.colaborapp.model;
 
-import java.util.InputMismatchException;
 import java.util.Set;
 
 public enum Province {
@@ -57,7 +56,7 @@ public enum Province {
     public static Province getProvinceFromString(String value) {
         String province = value.toUpperCase();
         if (!provinces.contains(province)) {
-            throw new InputMismatchException("Unknown Province: %s".formatted(value));
+            throw new IllegalArgumentException("Unknown Province: %s".formatted(value)); // TODO: catch me
         }
         return Province.valueOf(province);
     }

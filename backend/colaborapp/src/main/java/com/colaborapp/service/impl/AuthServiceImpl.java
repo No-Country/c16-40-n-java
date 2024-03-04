@@ -3,7 +3,6 @@ package com.colaborapp.service.impl;
 import com.colaborapp.auth.JwtService;
 import com.colaborapp.dto.AuthRequestDTO;
 import com.colaborapp.dto.AuthResponseDTO;
-import com.colaborapp.model.exception.AccountDisabledException;
 import com.colaborapp.service.AuthService;
 import com.colaborapp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponseDTO authentication(AuthRequestDTO request) {
         var user = userService.getUserByEmailFromDatabase(request.email());
         if (!user.isEnable()) {
-            throw new AccountDisabledException("This account is not longer available.");
+            throw new RuntimeException("This account is not longer available."); // TODO: change me
         }
         // creates a user to authenticate
         authManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));

@@ -19,5 +19,7 @@ public interface ProjectService {
 
     Project getProjectEntityById(Long id);
 
-    void deleteProject(Long id);
+    void deleteUserOwnedProject(Long id);
+
+    void deleteUserProject(Long id);
 }

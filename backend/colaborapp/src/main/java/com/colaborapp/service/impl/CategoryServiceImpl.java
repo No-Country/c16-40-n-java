@@ -3,11 +3,9 @@ package com.colaborapp.service.impl;
 import com.colaborapp.dto.CategoryResponseDTO;
 import com.colaborapp.model.Category;
 import com.colaborapp.model.CategoryType;
-import com.colaborapp.model.exception.RequiredObjectException;
 import com.colaborapp.model.mapper.CategoryMapper;
 import com.colaborapp.repository.CategoryRepository;
 import com.colaborapp.service.CategoryService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryByType(CategoryType type) {
         if (Objects.isNull(type)) {
-            throw new RequiredObjectException("CategoryType is needed to perform this operation.");
+            throw new RuntimeException("CategoryType is needed to perform this operation."); // TODO: change me
         }
         return categoryRepository.findCategoryByType(type)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found for type '%s'".formatted(type)));
+                .orElseThrow(() -> new RuntimeException("Category not found for type '%s'".formatted(type))); // TODO: change me
     }
 
     @Override

@@ -3,22 +3,25 @@ package com.colaborapp.service.impl;
 import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.model.*;
-import com.colaborapp.model.exception.RequiredObjectException;
 import com.colaborapp.model.mapper.ProjectMapper;
 import com.colaborapp.repository.ProjectRepository;
 import com.colaborapp.service.*;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.web.firewall.RequestRejectedException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
+@EnableAsync
 @RequiredArgsConstructor
+@Slf4j
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final AddressService addressService;
@@ -49,7 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectResponseDTO updateProject(Long id, ProjectRequestDTO updateRequest) {
         Project projectToUpdate = getProjectEntityById(id);
         if (!projectToUpdate.getCreator().getEmail().equals(authService.getAuthenticatedUsername())) {
-            throw new RequestRejectedException("Trying to modify a not owned project.");
+            throw new RuntimeException("Trying to modify a not owned project."); // TODO: change me
         }
         if (Objects.nonNull(updateRequest.categoryType()) && !updateRequest.categoryType().trim().isEmpty()) {
             CategoryType categoryType = CategoryType.getCategoryTypeFromString(updateRequest.categoryType());
@@ -73,7 +76,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectResponseDTO getProjectById(Long id) {
         return projectRepository.findById(id).map(projectMapper::toDTO)
-                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id)); // TODO: change me
 
     }
 
@@ -91,23 +94,38 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getProjectEntityById(Long id) {
         if (Objects.isNull(id)) {
-            throw new RequiredObjectException("The current Project ID is empty or null.");
+            throw new RuntimeException("Required Project ID is null."); // TODO: change me
         }
         return projectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Project not found for ID: %s".formatted(id)));
+                .orElseThrow(() -> new RuntimeException("Project not found for ID: %s".formatted(id))); // TODO: change me
     }
 
     @Override
-    public void deleteProject(Long id) {
-        if (Objects.isNull(id)) {
-            throw new RequiredObjectException("Required Project ID is null.");
-        }
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Project not found with id: %s".formatted(id)));
+    public void deleteUserOwnedProject(Long id) {
+        Project project = getProjectEntityById(id);
         if (!project.getCreator().getEmail().equals(authService.getAuthenticatedUsername())) {
-            throw new RequestRejectedException("Trying to modify a not owned project.");
+            throw new RuntimeException("Trying to modify a not owned project."); // TODO: change me
         }
         project.setStatus(Status.DELETED);
         projectRepository.save(project);
+    }
+
+    @Async
+    @Override
+    public void deleteUserProject(Long id) {
+        Project project = getProjectEntityById(id);
+        // TODO: send notification to owner
+        log.info("Preparing task...");
+        try {
+            log.info("Inside try-catch block. Processing task...");
+            TimeUnit.DAYS.sleep(30);
+        } catch (InterruptedException e) {
+            log.error("An error occurred while waiting to delete a project: {}", e.getMessage());
+        }
+        log.info("Task started: delete project with ID '{}'", id);
+        project.setStatus(Status.DELETED);
+        project = projectRepository.save(project);
+        log.info("Request to delete project completed. Project ID: {} - Status: {}", project.getId(), project.getStatus());
+        // TODO: send notification to owner that his project was deleted
     }
 }

@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -46,7 +45,7 @@ public class Project {
     @Column(nullable = false, name = "END_DATE")
     private LocalDate endDate;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "ADDRESS_ID")
     private Address address;
 
     // Setters
@@ -116,13 +115,13 @@ public class Project {
     public void setEndDate(LocalDate endDate) {
         if (Objects.nonNull(endDate)) {
             if (endDate.isBefore(this.startDate)) {
-                throw new DateTimeException("End date is before start date. Please, make sure end date is after.");
+                throw new RuntimeException("End date is before start date. Please, make sure end date is after."); // TODO: change me
             }
             if ((endDate.isEqual(this.startDate))) {
-                throw new DateTimeException("End date and Start date are same date. Please, make sure end date is after.");
+                throw new RuntimeException("End date and Start date are same date. Please, make sure end date is after."); // TODO: change me
             }
             if (endDate.isBefore(LocalDate.now()) || endDate.isEqual(LocalDate.now())) {
-                throw new DateTimeException(("End date can't be equal or before the current date."));
+                throw new RuntimeException(("End date can't be equal or before the current date.")); // TODO: change me
             }
             this.endDate = endDate;
         }
