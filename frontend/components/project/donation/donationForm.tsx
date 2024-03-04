@@ -29,6 +29,7 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
+import { Icon } from '@radix-ui/react-select';
 
 interface Props {
   project: project;
@@ -94,7 +95,9 @@ const DonationForm = ({ project }: Props) => {
             name="amount"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Indica el monto</FormLabel>
+                <FormLabel className="font-medium text-base">
+                  Indica el monto
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
@@ -120,10 +123,7 @@ const DonationForm = ({ project }: Props) => {
               <h2 className="py-2 font-medium">Metodo de pago</h2>
             </div>
             <div className="grid gap-6">
-              <RadioGroup
-                defaultValue="card"
-                className="grid grid-cols-3 gap-4"
-              >
+              <RadioGroup defaultValue="card" className="flex gap-2 lg:gap-3">
                 <div>
                   <RadioGroupItem
                     value="card"
@@ -132,22 +132,35 @@ const DonationForm = ({ project }: Props) => {
                   />
                   <Label
                     htmlFor="card"
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    className="flex w-16 h-16 lg:w-24 lg:h-24 flex-col items-center justify-center rounded-sm border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-foreground [&:has([data-state=checked])]:border-foreground cursor-pointer"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="mb-3 h-6 w-6"
-                    >
-                      <rect width="20" height="14" x="2" y="5" rx="2" />
-                      <path d="M2 10h20" />
-                    </svg>
-                    Card
+                    <Icons.CreditCard className="w-12 lg:w-36" />
+                  </Label>
+                </div>
+                <div>
+                  <RadioGroupItem
+                    value="mercadolibre"
+                    id="mercadolibre"
+                    className="peer sr-only"
+                  />
+                  <Label
+                    htmlFor="mercadolibre"
+                    className="flex w-16 h-16 lg:w-24 lg:h-24 flex-col items-center justify-center rounded-sm border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-foreground [&:has([data-state=checked])]:border-foreground cursor-pointer"
+                  >
+                    <Icons.MercadoLibreIcon className="w-12 lg:w-36" />
+                  </Label>
+                </div>
+                <div>
+                  <RadioGroupItem
+                    value="westernunion"
+                    id="westernunion"
+                    className="peer sr-only"
+                  />
+                  <Label
+                    htmlFor="westernunion"
+                    className="flex w-16 h-16 lg:w-24 lg:h-24 flex-col items-center justify-center rounded-sm border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-foreground [&:has([data-state=checked])]:border-foreground cursor-pointer"
+                  >
+                    <Icons.WesternUnionIcon className="w-12 lg:w-36" />
                   </Label>
                 </div>
                 <div>
@@ -158,41 +171,44 @@ const DonationForm = ({ project }: Props) => {
                   />
                   <Label
                     htmlFor="paypal"
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    className="flex w-16 h-16 lg:w-24 lg:h-24 flex-col items-center justify-center rounded-sm border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-foreground [&:has([data-state=checked])]:border-foreground cursor-pointer"
                   >
-                    <Icons.Calendar className="mb-3 h-6 w-6" />
-                    Paypal
-                  </Label>
-                </div>
-                <div>
-                  <RadioGroupItem
-                    value="apple"
-                    id="apple"
-                    className="peer sr-only"
-                  />
-                  <Label
-                    htmlFor="apple"
-                    className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                  >
-                    <Icons.AppLogo className="mb-3 h-6 w-6" />
-                    Apple
+                    <Icons.PayPalIcon className="w-12 lg:w-36" />
                   </Label>
                 </div>
               </RadioGroup>
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="First Last" />
+              <div className="flex gap-2">
+                <div className="grid gap-2 w-1/2">
+                  <Label htmlFor="name">Nombre</Label>
+                  <Input id="name" placeholder="Nombre" className="bg-white" />
+                </div>
+                <div className="grid gap-2 w-1/2">
+                  <Label htmlFor="lastName">Apellido</Label>
+                  <Input
+                    id="lastName"
+                    placeholder="Apellido"
+                    className="bg-white"
+                  />
+                </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="number">Card number</Label>
-                <Input id="number" placeholder="" />
+                <Label htmlFor="email">Correo</Label>
+                <Input id="email" placeholder="Correo" className="bg-white" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="number">Número de tarjeta</Label>
+                <Input
+                  id="number"
+                  placeholder="Número de tarjeta"
+                  className="bg-white"
+                />
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="month">Expires</Label>
+                  <Label htmlFor="month">Fecha de vencimiento</Label>
                   <Select>
-                    <SelectTrigger id="month">
-                      <SelectValue placeholder="Month" />
+                    <SelectTrigger id="month" className="bg-white">
+                      <SelectValue placeholder="Mes" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="1">Enero</SelectItem>
@@ -213,8 +229,8 @@ const DonationForm = ({ project }: Props) => {
                 <div className="grid gap-2">
                   <Label htmlFor="year">Año</Label>
                   <Select>
-                    <SelectTrigger id="year">
-                      <SelectValue placeholder="Year" />
+                    <SelectTrigger id="year" className="bg-white mt-auto">
+                      <SelectValue placeholder="Año" />
                     </SelectTrigger>
                     <SelectContent>
                       {Array.from({ length: 10 }, (_, i) => (
@@ -229,8 +245,8 @@ const DonationForm = ({ project }: Props) => {
                   </Select>
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="cvc">CVC</Label>
-                  <Input id="cvc" placeholder="CVC" />
+                  <Label htmlFor="cvc">Código de seguridad</Label>
+                  <Input id="cvc" placeholder="CVC" className="bg-white" />
                 </div>
               </div>
             </div>

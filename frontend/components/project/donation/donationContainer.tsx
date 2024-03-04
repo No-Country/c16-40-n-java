@@ -35,6 +35,11 @@ const DonationContainer = async ({ projectId }: Props) => {
               .
             </p>
             <DonationForm project={selectedProject} />
+            <p className="pt-10">
+              Al elegir el método de pago anterior, aceptas los Términos de
+              Servicio de Colaborapp! y declaras tu conformidad con la
+              Declaración de Privacidad.
+            </p>
           </div>
         )}
       </div>
