@@ -48,27 +48,32 @@ const DeleteButton = ({ projectId, token }: Props) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="w-36" variant={'destructive'}>
-          Dar de baja
+        <Button
+          className="border-2 border-destructive text-destructive lg:w-52 rounded-sm hover:bg-red-700 hover:text-white"
+          variant={'secondary'}
+        >
+          Dar de baja el proyecto
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-[90%] rounded-lg">
+      <AlertDialogContent className="w-[90%] rounded-lg bg-white px-14 pt-14">
         <AlertDialogHeader>
           <AlertDialogTitle>Dar de baja el proyecto</AlertDialogTitle>
-          <AlertDialogDescription className="text-foreground">
-            Esta seguro de que desea dar de baja el proyecto? Esta acción no se
-            puede desahacer.
+          <AlertDialogDescription className="text-foreground py-5">
+            Estás a punto de eliminar tu proyecto de recaudación de fondos.
+            ¿Estás seguro/a de que deseas proceder? Ten en cuenta que esta
+            acción no se puede deshacer y se perderán todos los datos asociados
+            al proyecto. Por favor, confirma tu decisión para continuar.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel className="bg-white border-2 border-foreground text-foreground">
+        <AlertDialogFooter className="flex w-full md:justify-center">
+          <AlertDialogCancel className="bg-white border-2 border-foreground text-foreground rounded-sm lg:w-1/2">
             Cancelar
           </AlertDialogCancel>
           <AlertDialogAction
-            className="bg-destructive text-destructive-foreground hover:bg-red-700"
+            className="bg-inherit border-2 border-destructive text-destructive hover:bg-red-700 hover:text-white rounded-sm lg:w-1/2"
             onClick={() => handleDeleteProject(projectId, token)}
           >
-            Confirmar
+            Dar de baja el proyecto
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

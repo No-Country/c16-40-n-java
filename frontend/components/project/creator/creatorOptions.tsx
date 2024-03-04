@@ -38,7 +38,7 @@ const CreatorOptions = ({ projectId, projectOwner }: Props) => {
           <div className="md:ml-auto flex gap-4">
             <Button
               variant={'secondary'}
-              className="border-2 border-foreground w-36"
+              className="border-2 border-foreground lg:w-52 rounded-sm"
               onClick={() => router.push(`/project/${projectId}/edit`)}
             >
               Editar

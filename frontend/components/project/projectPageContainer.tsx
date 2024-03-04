@@ -33,10 +33,6 @@ const ProjectPageContainer = async ({ projectId }: Props) => {
               )}
             </div>
             <div className="flex flex-col items-center m-auto gap-5">
-              <div>
-                <p>Fecha de inicio: {selectedProject?.startDate}</p>
-                <p>Fecha de finalización: {selectedProject?.endDate}</p>
-              </div>
               <div className="flex items-center mr-auto">
                 <Icons.PlusIcon />{' '}
                 <p className="font-semibold">{selectedProject?.id} donativos</p>
