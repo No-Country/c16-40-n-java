@@ -1,11 +1,13 @@
 package com.colaborapp.service.impl;
 
+import com.colaborapp.dto.Mail;
 import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.model.*;
 import com.colaborapp.model.mapper.ProjectMapper;
 import com.colaborapp.repository.ProjectRepository;
 import com.colaborapp.service.*;
+import com.colaborapp.utils.ApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -29,6 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserService userService;
     private final CategoryService categoryService;
     private final AuthService authService;
+    private final MailService mailService;
 
     @Override
     public ProjectResponseDTO createProject(ProjectRequestDTO request) {
@@ -114,18 +117,27 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void deleteUserProject(Long id) {
         Project project = getProjectEntityById(id);
-        // TODO: send notification to owner
-        log.info("Preparing task...");
+        String projectTitle = project.getTitle();
+        String subject = "Baja de Proyecto '%s'".formatted(projectTitle);
+        String email = project.getCreator().getEmail();
+        mailService.sendMail(Mail.builder()
+                .to(email)
+                .subject(subject)
+                .content(ApiUtil.createContentPreDeletion(projectTitle))
+                .build());
+        project.setStatus(Status.PENDING);
+        projectRepository.save(project);
         try {
-            log.info("Inside try-catch block. Processing task...");
             TimeUnit.DAYS.sleep(30);
         } catch (InterruptedException e) {
             log.error("An error occurred while waiting to delete a project: {}", e.getMessage());
         }
-        log.info("Task started: delete project with ID '{}'", id);
         project.setStatus(Status.DELETED);
         project = projectRepository.save(project);
-        log.info("Request to delete project completed. Project ID: {} - Status: {}", project.getId(), project.getStatus());
-        // TODO: send notification to owner that his project was deleted
+        mailService.sendMail(Mail.builder()
+                .to(project.getCreator().getEmail())
+                .subject(subject)
+                .content(ApiUtil.createContentPosDeletion(projectTitle))
+                .build());
     }
 }

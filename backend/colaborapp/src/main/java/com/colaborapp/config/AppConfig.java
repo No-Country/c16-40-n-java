@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -30,7 +29,7 @@ public class AppConfig {
     public UserDetailsService userDetailsService() {
         return username -> {
             com.colaborapp.model.User appUser = userRepository.findByEmail(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+                    .orElseThrow(() -> new RuntimeException("User not found.")); // TODO: catch me
             return User.builder()
                     .username(appUser.getEmail())
                     .password(appUser.getPassword())

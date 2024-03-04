@@ -50,7 +50,7 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     /*
      * If the payload of any endpoint of the API is required, this method handle it trowing
-     * a proper message.
+     * a proper content.
      * */
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,

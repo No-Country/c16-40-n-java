@@ -1,5 +1,6 @@
 package com.colaborapp.service.impl;
 
+import com.colaborapp.dto.Mail;
 import com.colaborapp.dto.UserRequestDTO;
 import com.colaborapp.dto.UserResponseDTO;
 import com.colaborapp.dto.VolunteerRequestDTO;
@@ -18,6 +19,9 @@ import org.springframework.util.Assert;
 
 import java.util.Objects;
 
+import static com.colaborapp.utils.ApiUtil.createContentForCreator;
+import static com.colaborapp.utils.ApiUtil.createContentForVolunteer;
+
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Lazy)
 public class UserServiceImpl implements UserService {
@@ -28,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final ProjectService projectService;
     private final VolunteerService volunteerService;
     private final AuthService authService;
+    private final MailService mailService;
 
     @Override
     public void userRegistration(UserRequestDTO registrationRequest) {
@@ -58,6 +63,17 @@ public class UserServiceImpl implements UserService {
         volunteer.setPhoneNumber(request.volunteerPhoneNumber());
         volunteer = userRepository.save(volunteer);
         volunteerService.createVolunteer(volunteer, project);
+        mailService.sendMail(Mail.builder()
+                .to(volunteer.getEmail())
+                .subject("Registro Voluntario")
+                .content(createContentForVolunteer(project.getTitle()))
+                .build());
+        mailService.sendMail(Mail.builder()
+                .to(project.getCreator().getEmail())
+                .subject("Voluntario Registrado")
+                .content(createContentForCreator(project.getTitle(), volunteer.getFullName(),
+                        volunteer.getEmail(), volunteer.getPhoneNumber()))
+                .build());
     }
 
     @Override
