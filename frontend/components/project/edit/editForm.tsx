@@ -102,7 +102,7 @@ const EditForm = ({ project }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-5">
         <div className="flex flex-col justify-between gap-2 w-full">
           <FormField
             control={form.control}
@@ -292,7 +292,7 @@ const EditForm = ({ project }: Props) => {
             Cancelar
           </Button>
           <Button type="submit" className="w-1/2 h-11 m-auto rounded-sm">
-            Confirmar
+            Guardar cambios
           </Button>
         </div>
       </form>

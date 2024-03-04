@@ -60,7 +60,7 @@ const CategorySelect = ({ form }: Props) => {
                   />
                   <Label
                     htmlFor={category.value}
-                    className="flex flex-col items-center justify-between rounded-sm border border-foreground bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary peer-data-[state=checked]:border-2 [&:has([data-state=checked])]:border-2 cursor-pointer w-36"
+                    className="flex flex-col text-muted-foreground items-center justify-between rounded-sm border border-muted-foreground bg-popover p-4 hover:bg-accent hover:text-foreground hover:border-foreground peer-data-[state=checked]:border-foreground [&:has([data-state=checked])]:border-foreground peer-data-[state=checked]:border-2 [&:has([data-state=checked])]:border-2 peer-data-[state=checked]:text-foreground [&:has([data-state=checked])]:text-foreground cursor-pointer w-36"
                   >
                     {category.name}
                   </Label>

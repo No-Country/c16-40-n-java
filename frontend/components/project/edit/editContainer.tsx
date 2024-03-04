@@ -10,8 +10,13 @@ const EditContainer = async ({ projectId }: Props) => {
 
   return (
     <section className="flex flex-col items-center h-full">
-      <div className="bg-white m-auto w-[95%] lg:w-1/2 rounded-lg px-5 py-10 mt-28 lg:mt-36 mb-10 flex flex-col lg:flex-row justify-between gap-5">
-        {selectedProject && <EditForm project={selectedProject} />}
+      <div className="m-auto w-[95%] lg:w-3/4 rounded-lg px-5 py-10 mt-20 lg:mt-28 mb-10 flex flex-col lg:flex-row justify-between gap-5">
+        <div>
+          <h2 className="text-xl lg:text-2xl font-medium">
+            Editar tu proyecto
+          </h2>
+          {selectedProject && <EditForm project={selectedProject} />}
+        </div>
       </div>
     </section>
   );
