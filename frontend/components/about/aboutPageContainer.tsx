@@ -20,17 +20,12 @@ const AboutPageContainer = () => {
           </p>
           <h3 className="font-medium">Visión:</h3>
           <p>
-            Misión: En Colaboraap, nos dedicamos a apoyar proyectos inspiradores
-            y de impacto positivo en diversas áreas, desde la educación y la
-            salud hasta el medio ambiente y el desarrollo comunitario. Nuestra
-            misión es fomentar la colaboración y la solidaridad entre
-            individuos, empresas y organizaciones para crear un mundo más justo
-            y sostenible. Visión: Nuestra visión es ser un catalizador de
-            cambio, conectando a personas comprometidas con causas
-            significativas y brindando los recursos necesarios para hacer
-            realidad proyectos transformadores. Nos esforzamos por ser un puente
-            entre quienes desean contribuir al bienestar de la sociedad y
-            aquellos que necesitan apoyo para llevar a cabo sus iniciativas.
+            Nuestra visión es ser un catalizador de cambio, conectando a
+            personas comprometidas con causas significativas y brindando los
+            recursos necesarios para hacer realidad proyectos transformadores.
+            Nos esforzamos por ser un puente entre quienes desean contribuir al
+            bienestar de la sociedad y aquellos que necesitan apoyo para llevar
+            a cabo sus iniciativas.
           </p>
         </div>
         <div className="w-[60%] md:w-[30%] lg:w-[20%] h-96 my-10">
