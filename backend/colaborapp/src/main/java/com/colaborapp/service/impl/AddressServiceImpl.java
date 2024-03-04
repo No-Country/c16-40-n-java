@@ -18,7 +18,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address createNewAddress(AddressRequestDTO request) {
-        Assert.notNull(request, "The request to create an Address can't be null.");
+        Assert.notNull(request, "The request to create an Address can't be null."); // TODO: catch me
         Province province = Province.getProvinceFromString(request.province());
         Address address = Address.builder()
                 .city(request.city())
@@ -31,7 +31,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void updateAddress(Address address, AddressRequestDTO updateRequest) {
-        Assert.notNull(updateRequest, "The request to update the Address info can't be null.");
+        Assert.notNull(updateRequest, "The request to update the Address info can't be null."); // TODO: catch me
         if (Objects.nonNull(updateRequest.province()) && !updateRequest.province().trim().isEmpty()) {
             Province province = Province.getProvinceFromString(updateRequest.province());
             address.setProvince(province);

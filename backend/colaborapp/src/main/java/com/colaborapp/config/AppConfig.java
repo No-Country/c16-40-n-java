@@ -35,7 +35,7 @@ public class AppConfig {
                     .username(appUser.getEmail())
                     .password(appUser.getPassword())
                     .disabled(!appUser.isEnable())
-                    .authorities(new SimpleGrantedAuthority(appUser.getRole().getType().name()))
+                    .authorities(new SimpleGrantedAuthority(appUser.getRole().getType().getFullRoleName()))
                     .build();
         };
     }
