@@ -57,7 +57,7 @@ const NewProjectForm = () => {
       title: '',
       description: '',
       image: '',
-      goalAmount: 1000,
+      goalAmount: undefined,
       categoryType: undefined,
       endDate: undefined,
       province: '',
@@ -104,7 +104,7 @@ const NewProjectForm = () => {
             name="title"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Titulo</FormLabel>
+                <FormLabel>Titulo*</FormLabel>
                 <FormControl>
                   <Input
                     className="border border-foreground bg-white rounded-sm"
@@ -121,7 +121,7 @@ const NewProjectForm = () => {
             name="description"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Descripción</FormLabel>
+                <FormLabel>Descripción*</FormLabel>
                 <FormControl>
                   <Input
                     className="border border-foreground bg-white rounded-sm"
@@ -138,7 +138,7 @@ const NewProjectForm = () => {
             name="goalAmount"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Monto a alcanzar</FormLabel>
+                <FormLabel>Monto a alcanzar*</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
@@ -161,7 +161,7 @@ const NewProjectForm = () => {
             name="image"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Imagen</FormLabel>
+                <FormLabel>Imagen*</FormLabel>
                 <FormControl>
                   <Input
                     className="border border-foreground bg-white rounded-sm"
@@ -179,7 +179,7 @@ const NewProjectForm = () => {
               name="province"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Provincia</FormLabel>
+                  <FormLabel>Provincia*</FormLabel>
                   <FormControl>
                     <Input
                       className="border border-foreground bg-white rounded-sm"
@@ -196,7 +196,7 @@ const NewProjectForm = () => {
               name="city"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Localidad</FormLabel>
+                  <FormLabel>Localidad*</FormLabel>
                   <FormControl>
                     <Input
                       className="border border-foreground bg-white rounded-sm"
@@ -231,7 +231,7 @@ const NewProjectForm = () => {
             name="endDate"
             render={({ field }) => (
               <FormItem className="flex flex-col w-full">
-                <FormLabel>Fecha de finalización</FormLabel>
+                <FormLabel>Fecha de finalización*</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -246,7 +246,9 @@ const NewProjectForm = () => {
                         {field.value ? (
                           format(field.value, 'dd/MM/yyyy')
                         ) : (
-                          <span>Selecciona una fecha</span>
+                          <span className="text-muted-foreground">
+                            Selecciona una fecha
+                          </span>
                         )}
                         <Icons.Calendar className="ml-auto h-4 w-4" />
                       </Button>

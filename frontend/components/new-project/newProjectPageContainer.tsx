@@ -15,7 +15,9 @@ const NewProjectPageContainer = () => {
           </p>
         </div>
         <div className="flex flex-col bg-white rounded-lg p-5 lg:p-10 lg:w-4/6">
-          <h2 className="text-3xl mb-5 font-semibold">Crear un proyecto</h2>
+          <h2 className="text-2xl lg:text-3xl mb-5 font-semibold text-center">
+            Crear un proyecto
+          </h2>
           <NewProjectForm />
         </div>
       </div>
