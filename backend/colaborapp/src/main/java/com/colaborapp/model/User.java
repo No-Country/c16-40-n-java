@@ -38,6 +38,10 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Volunteer> volunteeringList;
 
+    public String getFullName() {
+        return name + ' ' + lastName;
+    }
+
     public Set<Project> getProjects() {
         return Objects.isNull(this.projects) ? new HashSet<>() : this.projects;
     }
