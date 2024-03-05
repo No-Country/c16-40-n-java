@@ -1,4 +1,12 @@
-import { Calendar, Eye, EyeOff, LucideProps, Menu, Search } from 'lucide-react';
+import {
+  Calendar,
+  Eye,
+  EyeOff,
+  Loader2,
+  LucideProps,
+  Menu,
+  Search,
+} from 'lucide-react';
 
 export const Icons = {
   Search: Search,
@@ -6,6 +14,7 @@ export const Icons = {
   Calendar: Calendar,
   Eye: Eye,
   EyeOff: EyeOff,
+  Spinner: Loader2,
   AppLogo: (props: LucideProps) => (
     <svg
       width="79"
