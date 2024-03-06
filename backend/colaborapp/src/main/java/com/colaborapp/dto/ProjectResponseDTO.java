@@ -5,6 +5,7 @@ import com.colaborapp.model.Status;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 public record ProjectResponseDTO(
@@ -19,8 +20,7 @@ public record ProjectResponseDTO(
         Double currentAmount,
         LocalDate startDate,
         LocalDate endDate,
-        AddressResponseDTO address
-
-        // TODO: agregar cantidad de voluntarios
+        AddressResponseDTO address,
+        List<String> donors
 ) {
 }

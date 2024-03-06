@@ -28,20 +28,9 @@ public class ProjectController {
         return ResponseEntity.status(CREATED).body(userService.performDonation(projectId, request));
     }
 
-    @GetMapping()
-    public ResponseEntity<List<ProjectResponseDTO>> getAllProjects() {
-        List<ProjectResponseDTO> responseList = projectService.getAllProjects();
-        return ResponseEntity.status(OK).body(responseList);
-    }
-
-    @GetMapping("/actives")
-    public ResponseEntity<List<ProjectResponseDTO>> listActiveProjects() {
-        return ResponseEntity.status(OK).body(projectService.getAllActiveProjects());
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ProjectResponseDTO> getProjectById(@PathVariable Long id) {
-        ProjectResponseDTO response = projectService.getProjectById(id);
+        ProjectResponseDTO response = projectService.fetchProjectData(id);
         return ResponseEntity.status(OK).body(response);
     }
 
@@ -61,5 +50,10 @@ public class ProjectController {
     public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id, @RequestBody ProjectRequestDTO request) {
         ProjectResponseDTO response = projectService.updateProject(id, request);
         return ResponseEntity.status(OK).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProjectResponseDTO>> getAllProjects(@RequestParam(required = false) String category) {
+        return ResponseEntity.status(OK).body(projectService.listProjectsByCategory(category));
     }
 }

@@ -6,10 +6,11 @@ import com.colaborapp.model.mapper.DonationMapper;
 import com.colaborapp.model.mapper.ProjectMapper;
 import com.colaborapp.model.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @Lazy)
 public class DonationMapperImpl implements DonationMapper {
     private final ProjectMapper projectMapper;
     private final UserMapper userMapper;

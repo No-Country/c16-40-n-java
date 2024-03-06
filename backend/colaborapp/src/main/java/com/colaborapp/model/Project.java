@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -44,6 +45,8 @@ public class Project {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ADDRESS_ID")
     private Address address;
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    private List<Donation> donations;
 
     // Setters
     public void setCreator(User creator) {

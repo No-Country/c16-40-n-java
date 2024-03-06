@@ -13,11 +13,9 @@ public interface ProjectService {
 
     void updateCurrentAmount(Project project, Double donation);
 
-    ProjectResponseDTO getProjectById(Long id);
+    ProjectResponseDTO fetchProjectData(Long id);
 
-    List<ProjectResponseDTO> getAllProjects();
-
-    List<ProjectResponseDTO> getAllActiveProjects();
+    List<ProjectResponseDTO> listProjectsByCategory(String category);
 
     Project getProjectEntityById(Long id);
 

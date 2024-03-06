@@ -10,13 +10,15 @@ import com.colaborapp.repository.DonationRepository;
 import com.colaborapp.service.DonationService;
 import com.colaborapp.service.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @Lazy)
 public class DonationServiceImpl implements DonationService {
     private final DonationRepository donationRepository;
     private final DonationMapper donationMapper;
@@ -38,11 +40,17 @@ public class DonationServiceImpl implements DonationService {
         }
         projectService.updateCurrentAmount(project, request.amount());
         Donation donation = Donation.builder()
-                                    .donor(donor)
-                                    .project(project)
-                                    .amount(request.amount())
-                                    .dateTime(LocalDateTime.now())
-                                    .build();
+                .donor(donor)
+                .project(project)
+                .amount(request.amount())
+                .dateTime(LocalDateTime.now())
+                .build();
         return donationMapper.toDTO(donationRepository.save(donation));
+    }
+
+    @Override
+    public List<String> getProjectDonors(Long projectId) {
+        Project project = projectService.getProjectEntityById(projectId);
+        return project.getDonations().stream().map(donation -> donation.getDonor().getFullName()).toList();
     }
 }

@@ -4,12 +4,16 @@ import com.colaborapp.dto.*;
 import com.colaborapp.model.Project;
 import com.colaborapp.model.User;
 import com.colaborapp.model.mapper.ProjectMapper;
+import com.colaborapp.service.DonationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 
 @Component
+@RequiredArgsConstructor
 public class ProjectMapperImpl implements ProjectMapper {
+    private final DonationService donationService;
 
     @Override
     public Project toEntity(ProjectRequestDTO dto) {
@@ -50,6 +54,7 @@ public class ProjectMapperImpl implements ProjectMapper {
                         .street(entity.getAddress().getStreet())
                         .number(entity.getAddress().getNumber())
                         .build())
+                .donors(donationService.getProjectDonors(entity.getId()))
                 .build();
     }
 

@@ -6,19 +6,21 @@ import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.model.*;
 import com.colaborapp.model.mapper.ProjectMapper;
 import com.colaborapp.repository.ProjectRepository;
+import com.colaborapp.repository.ProjectSpecification;
 import com.colaborapp.service.*;
 import com.colaborapp.utils.ApiUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Service
 @EnableAsync
@@ -88,21 +90,22 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseDTO getProjectById(Long id) {
+    public ProjectResponseDTO fetchProjectData(Long id) {
         return projectRepository.findByIdAndStatusAndEndDateAfter(id, Status.ACTIVE, LocalDate.now())
                 .map(projectMapper::toDTO)
                 .orElseThrow(() -> new RuntimeException("Project not found with id: " + id)); // TODO: change me
     }
 
     @Override
-    public List<ProjectResponseDTO> getAllProjects() {
-        return projectRepository.findAll().stream().map(projectMapper::toDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProjectResponseDTO> getAllActiveProjects() {
-        return projectRepository.findAllByStatusAndEndDateAfter(Status.ACTIVE, LocalDate.now())
-                .stream().map(projectMapper::toDTO).toList();
+    public List<ProjectResponseDTO> listProjectsByCategory(String category) {
+        if (!StringUtils.hasText(category)) {
+            return projectRepository.findAllByStatusAndEndDateAfter(Status.ACTIVE, LocalDate.now())
+                    .stream().map(projectMapper::toDTO).toList();
+        }
+        CategoryType categoryType = CategoryType.getCategoryTypeFromString(category);
+        Category projectCategory = categoryService.getCategoryByType(categoryType);
+        final Specification<Project> specification = ProjectSpecification.filterProjects(projectCategory);
+        return projectRepository.findAll(specification).stream().map(projectMapper::toDTO).toList();
     }
 
     @Override
@@ -110,7 +113,7 @@ public class ProjectServiceImpl implements ProjectService {
         if (Objects.isNull(id)) {
             throw new RuntimeException("Required Project ID is null."); // TODO: change me
         }
-        return projectRepository.findById(id)
+        return projectRepository.findByIdAndStatusAndEndDateAfter(id, Status.ACTIVE, LocalDate.now())
                 .orElseThrow(() -> new RuntimeException("Project not found for ID: %s".formatted(id))); // TODO: change me
     }
 
