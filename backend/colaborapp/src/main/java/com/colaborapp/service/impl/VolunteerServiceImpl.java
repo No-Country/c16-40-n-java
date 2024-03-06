@@ -5,17 +5,21 @@ import com.colaborapp.model.Status;
 import com.colaborapp.model.User;
 import com.colaborapp.model.Volunteer;
 import com.colaborapp.repository.VolunteerRepository;
+import com.colaborapp.service.ProjectService;
 import com.colaborapp.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @Lazy)
 public class VolunteerServiceImpl implements VolunteerService {
     private final VolunteerRepository volunteerRepository;
+    private final ProjectService projectService;
 
     @Override
     public void createVolunteer(User userVolunteer, Project project) {
@@ -30,5 +34,11 @@ public class VolunteerServiceImpl implements VolunteerService {
         }
         Volunteer volunteer = Volunteer.builder().user(userVolunteer).project(project).build();
         volunteerRepository.save(volunteer);
+    }
+
+    @Override
+    public List<String> getProjectVolunteers(Long projectId) {
+        Project project = projectService.getProjectEntityById(projectId);
+        return project.getVolunteers().stream().map(volunteer -> volunteer.getUser().getFullName()).toList();
     }
 }

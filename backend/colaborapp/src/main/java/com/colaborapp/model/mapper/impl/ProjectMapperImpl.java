@@ -5,6 +5,7 @@ import com.colaborapp.model.Project;
 import com.colaborapp.model.User;
 import com.colaborapp.model.mapper.ProjectMapper;
 import com.colaborapp.service.DonationService;
+import com.colaborapp.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -14,6 +15,7 @@ import org.springframework.util.Assert;
 @RequiredArgsConstructor
 public class ProjectMapperImpl implements ProjectMapper {
     private final DonationService donationService;
+    private final VolunteerService volunteerService;
 
     @Override
     public Project toEntity(ProjectRequestDTO dto) {
@@ -55,6 +57,7 @@ public class ProjectMapperImpl implements ProjectMapper {
                         .number(entity.getAddress().getNumber())
                         .build())
                 .donors(donationService.getProjectDonors(entity.getId()))
+                .volunteers(volunteerService.getProjectVolunteers(entity.getId()))
                 .build();
     }
 

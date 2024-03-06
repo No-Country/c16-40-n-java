@@ -21,6 +21,7 @@ public record ProjectResponseDTO(
         LocalDate startDate,
         LocalDate endDate,
         AddressResponseDTO address,
-        List<String> donors
+        List<String> donors,
+        List<String> volunteers
 ) {
 }

@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,8 +47,10 @@ public class Project {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ADDRESS_ID")
     private Address address;
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
     private List<Donation> donations;
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private List<Volunteer> volunteers;
 
     // Setters
     public void setCreator(User creator) {
@@ -139,5 +143,13 @@ public class Project {
 
     public boolean isNoLongerActive() {
         return !this.status.equals(Status.ACTIVE);
+    }
+
+    public List<Donation> getDonations() {
+        return CollectionUtils.isEmpty(this.donations) ? new ArrayList<>() : this.donations;
+    }
+
+    public List<Volunteer> getVolunteers() {
+        return CollectionUtils.isEmpty(this.volunteers) ? new ArrayList<>() : this.volunteers;
     }
 }
