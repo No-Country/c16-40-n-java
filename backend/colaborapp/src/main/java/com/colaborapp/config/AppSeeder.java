@@ -1,13 +1,12 @@
 package com.colaborapp.config;
 
-import com.colaborapp.model.Category;
-import com.colaborapp.model.CategoryType;
-import com.colaborapp.model.Role;
-import com.colaborapp.model.RoleType;
+import com.colaborapp.model.*;
 import com.colaborapp.repository.CategoryRepository;
 import com.colaborapp.repository.RoleRepository;
+import com.colaborapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,6 +16,8 @@ import java.util.List;
 public class AppSeeder implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -36,10 +37,20 @@ public class AppSeeder implements CommandLineRunner {
             ));
         }
         if (roleRepository.findAll().isEmpty()) {
-            roleRepository.saveAll(List.of(
-                    Role.builder().type(RoleType.USER).build(),
-                    Role.builder().type(RoleType.ADMIN).build()
-            ));
+            Role ROLE_ADMIN = Role.builder().type(RoleType.ADMIN).build();
+            Role ROLE_USER = Role.builder().type(RoleType.USER).build();
+            ROLE_ADMIN = roleRepository.save(ROLE_ADMIN);
+            roleRepository.save(ROLE_USER);
+            User ADMIN = User.builder()
+                    .email("admin@mail.com")
+                    .name("ADMIN")
+                    .lastName("ADMIN")
+                    .role(ROLE_ADMIN)
+                    .enable(true)
+                    .password(encoder.encode("admin"))
+                    .build();
+            userRepository.save(ADMIN);
         }
+
     }
 }

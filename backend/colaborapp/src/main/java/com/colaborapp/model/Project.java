@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -15,9 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLRestriction(value = "status <> 'DELETED'")
 public class Project {
-    // Getters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -125,5 +122,19 @@ public class Project {
             }
             this.endDate = endDate;
         }
+    }
+
+    public void appendDonationToCurrentAmount(Double donation) {
+        if (Objects.nonNull(donation) && donation >= 500 && this.getCurrentAmount() < this.getGoalAmount()) {
+            this.setCurrentAmount(Double.sum(this.getCurrentAmount(), donation));
+        }
+    }
+
+    public boolean isEnded() {
+        return this.getEndDate().isBefore(LocalDate.now());
+    }
+
+    public boolean isNoLongerActive() {
+        return !this.status.equals(Status.ACTIVE);
     }
 }

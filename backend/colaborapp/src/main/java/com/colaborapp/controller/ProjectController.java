@@ -1,8 +1,11 @@
 package com.colaborapp.controller;
 
+import com.colaborapp.dto.DonationRequestDTO;
+import com.colaborapp.dto.DonationResponseDTO;
 import com.colaborapp.dto.ProjectRequestDTO;
 import com.colaborapp.dto.ProjectResponseDTO;
 import com.colaborapp.service.ProjectService;
+import com.colaborapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,13 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
+    private final UserService userService;
+
+    @PostMapping(value = "/donate/{id}")
+    public ResponseEntity<DonationResponseDTO> donate(@PathVariable("id") Long projectId,
+                                                      @Valid @RequestBody DonationRequestDTO request) {
+        return ResponseEntity.status(CREATED).body(userService.performDonation(projectId, request));
+    }
 
     @GetMapping()
     public ResponseEntity<List<ProjectResponseDTO>> getAllProjects() {

@@ -20,5 +20,7 @@ public record ProjectResponseDTO(
         LocalDate startDate,
         LocalDate endDate,
         AddressResponseDTO address
+
+        // TODO: agregar cantidad de voluntarios
 ) {
 }

@@ -72,15 +72,26 @@ public class ProjectServiceImpl implements ProjectService {
         projectToUpdate.setGoalAmount(updateRequest.goalAmount());
         projectToUpdate.setEndDate(updateRequest.endDate());
         // updates the Address info
-        addressService.updateAddress(projectToUpdate.getAddress(), updateRequest.address());
+        if (Objects.nonNull(updateRequest.address())) {
+            addressService.updateAddress(projectToUpdate.getAddress(), updateRequest.address());
+        }
         return projectMapper.toDTO(projectRepository.save(projectToUpdate));
     }
 
     @Override
-    public ProjectResponseDTO getProjectById(Long id) {
-        return projectRepository.findById(id).map(projectMapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id)); // TODO: change me
+    public void updateCurrentAmount(Project project, Double donation) {
+        if (Objects.isNull(donation) || donation < 500) {
+            throw new RuntimeException("Donation amount can't be less than $500 pesos."); // TODO: catch me
+        }
+        project.appendDonationToCurrentAmount(donation);
+        projectRepository.save(project);
+    }
 
+    @Override
+    public ProjectResponseDTO getProjectById(Long id) {
+        return projectRepository.findByIdAndStatusAndEndDateAfter(id, Status.ACTIVE, LocalDate.now())
+                .map(projectMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("Project not found with id: " + id)); // TODO: change me
     }
 
     @Override

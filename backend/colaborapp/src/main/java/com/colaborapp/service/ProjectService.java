@@ -11,6 +11,8 @@ public interface ProjectService {
 
     ProjectResponseDTO updateProject(Long id, ProjectRequestDTO updateRequest);
 
+    void updateCurrentAmount(Project project, Double donation);
+
     ProjectResponseDTO getProjectById(Long id);
 
     List<ProjectResponseDTO> getAllProjects();

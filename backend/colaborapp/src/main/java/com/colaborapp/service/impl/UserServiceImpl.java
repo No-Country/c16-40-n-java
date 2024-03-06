@@ -1,9 +1,6 @@
 package com.colaborapp.service.impl;
 
-import com.colaborapp.dto.Mail;
-import com.colaborapp.dto.UserRequestDTO;
-import com.colaborapp.dto.UserResponseDTO;
-import com.colaborapp.dto.VolunteerRequestDTO;
+import com.colaborapp.dto.*;
 import com.colaborapp.model.Project;
 import com.colaborapp.model.Role;
 import com.colaborapp.model.RoleType;
@@ -33,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final VolunteerService volunteerService;
     private final AuthService authService;
     private final MailService mailService;
+    private final DonationService donationService;
 
     @Override
     public void userRegistration(UserRequestDTO registrationRequest) {
@@ -74,6 +72,12 @@ public class UserServiceImpl implements UserService {
                 .content(createContentForCreator(project.getTitle(), volunteer.getFullName(),
                         volunteer.getEmail(), volunteer.getPhoneNumber()))
                 .build());
+    }
+
+    @Override
+    public DonationResponseDTO performDonation(Long projectId, DonationRequestDTO request) {
+        User donor = getUserByEmailFromDatabase(authService.getAuthenticatedUsername());
+        return donationService.createDonation(donor, projectId, request);
     }
 
     @Override
