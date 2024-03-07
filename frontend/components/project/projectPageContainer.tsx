@@ -35,7 +35,9 @@ const ProjectPageContainer = async ({ projectId }: Props) => {
             <div className="flex flex-col items-center m-auto gap-5">
               <div className="flex items-center mr-auto">
                 <Icons.PlusIcon />{' '}
-                <p className="font-semibold">{selectedProject?.id} donativos</p>
+                <p className="font-semibold">
+                  {selectedProject?.donors?.length} donativos
+                </p>
               </div>
               <DonateButton projectId={selectedProject?.id} />
               <ColaborateButton projectId={selectedProject?.id} />

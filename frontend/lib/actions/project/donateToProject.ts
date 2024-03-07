@@ -2,16 +2,25 @@
 
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-export async function deleteProject(projectId: number, token: string) {
+interface donationForm {
+  amount: number;
+}
+
+export async function donateToProject(
+  projectId: number,
+  formData: donationForm,
+  token: string
+) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/projects/${projectId}`,
+      `${process.env.API_URL}/projects/donate/${projectId}`,
       {
-        method: 'DELETE',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({ ...formData }),
       }
     );
     const result = response;

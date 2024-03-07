@@ -23,6 +23,7 @@ import DonationFormTop from '@/components/project/donation/donationFormTop';
 import { Button } from '@/components/ui/button';
 import DonationSuccesfulDialog from '@/components/project/donation/donationSuccesfulDialog';
 import { useState } from 'react';
+import { donateToProject } from '@/lib/actions/project/donateToProject';
 
 interface Props {
   project: project;
@@ -60,8 +61,8 @@ const DonationForm = ({ project }: Props) => {
   const { token } = useAuth();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (values) {
-      console.log('Exitoso');
+    const formResponse = await donateToProject(project.id, values, token!);
+    if (formResponse) {
       setOpen(true);
       return;
     } else {
