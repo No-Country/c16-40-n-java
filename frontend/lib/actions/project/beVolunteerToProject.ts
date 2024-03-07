@@ -12,17 +12,14 @@ export async function beVolunteerToProject(
   token: string
 ) {
   try {
-    const response = await fetch(
-      `${process.env.API_URL}/projects/users/volunteer`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ ...formData, projectId: projectId }),
-      }
-    );
+    const response = await fetch(`${process.env.API_URL}/users/volunteer`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ ...formData, projectId: projectId }),
+    });
 
     if (!response.ok) {
       throw new Error(
