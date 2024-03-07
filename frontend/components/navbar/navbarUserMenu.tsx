@@ -30,7 +30,6 @@ const NavbarUserMenu = () => {
 
   return (
     <>
-      <Suspense fallback={<p>LO</p>} />
       {userData ? (
         <DropdownMenu>
           <DropdownMenuTrigger>

@@ -1,9 +1,8 @@
 import { Progress } from '@/components/ui/progress';
 import { Icons } from '@/components/icons';
 import { getProjectById } from '@/lib/actions/project/getProjectById';
-import DonateButton from './donateButton';
-import ColaborateButton from './colaborateButton';
 import CreatorOptions from './creator/creatorOptions';
+import ProjectActions from './projectActions';
 
 interface Props {
   projectId: string;
@@ -39,8 +38,9 @@ const ProjectPageContainer = async ({ projectId }: Props) => {
                   {selectedProject?.donors?.length} donativos
                 </p>
               </div>
-              <DonateButton projectId={selectedProject?.id} />
-              <ColaborateButton projectId={selectedProject?.id} />
+              <div className="flex flex-col justify-center gap-4">
+                <ProjectActions project={selectedProject} />
+              </div>
             </div>
           </div>
           <div className="wfull lg:w-1/2">
