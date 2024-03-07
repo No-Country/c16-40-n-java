@@ -11,13 +11,15 @@ public interface ProjectService {
 
     ProjectResponseDTO updateProject(Long id, ProjectRequestDTO updateRequest);
 
-    ProjectResponseDTO getProjectById(Long id);
+    void updateCurrentAmount(Project project, Double donation);
 
-    List<ProjectResponseDTO> getAllProjects();
+    ProjectResponseDTO fetchProjectData(Long id);
 
-    List<ProjectResponseDTO> getAllActiveProjects();
+    List<ProjectResponseDTO> listProjectsByCategory(String category);
 
     Project getProjectEntityById(Long id);
 
-    void deleteProject(Long id);
+    void deleteUserOwnedProject(Long id);
+
+    void deleteUserProject(Long id);
 }

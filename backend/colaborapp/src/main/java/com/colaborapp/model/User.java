@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -34,9 +35,14 @@ public class User {
     @Setter
     private boolean enable;
     @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
+    @SQLRestriction("status <> 'DELETED'")
     private Set<Project> projects;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Volunteer> volunteeringList;
+
+    public String getFullName() {
+        return name + ' ' + lastName;
+    }
 
     public Set<Project> getProjects() {
         return Objects.isNull(this.projects) ? new HashSet<>() : this.projects;

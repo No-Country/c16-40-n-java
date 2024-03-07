@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
+import org.springframework.util.CollectionUtils;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -17,10 +17,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE colaborapp.project SET status='DELETED' WHERE id=?")
-@SQLRestriction(value = "status <> 'DELETED'")
 public class Project {
-    // Getters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,6 +44,13 @@ public class Project {
     private LocalDate startDate;
     @Column(nullable = false, name = "END_DATE")
     private LocalDate endDate;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ADDRESS_ID")
+    private Address address;
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private List<Donation> donations;
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    private List<Volunteer> volunteers;
 
     // Setters
     public void setCreator(User creator) {
@@ -106,18 +110,46 @@ public class Project {
         }
     }
 
+    public void setAddress(Address address) {
+        if (Objects.nonNull(address)) {
+            this.address = address;
+        }
+    }
+
     public void setEndDate(LocalDate endDate) {
         if (Objects.nonNull(endDate)) {
             if (endDate.isBefore(this.startDate)) {
-                throw new DateTimeException("End date is before start date. Please, make sure end date is after.");
+                throw new RuntimeException("End date is before start date. Please, make sure end date is after."); // TODO: change me
             }
             if ((endDate.isEqual(this.startDate))) {
-                throw new DateTimeException("End date and Start date are same date. Please, make sure end date is after.");
+                throw new RuntimeException("End date and Start date are same date. Please, make sure end date is after."); // TODO: change me
             }
             if (endDate.isBefore(LocalDate.now()) || endDate.isEqual(LocalDate.now())) {
-                throw new DateTimeException(("End date can't be equal or before the current date."));
+                throw new RuntimeException(("End date can't be equal or before the current date.")); // TODO: change me
             }
             this.endDate = endDate;
         }
+    }
+
+    public void appendDonationToCurrentAmount(Double donation) {
+        if (Objects.nonNull(donation) && donation >= 500 && this.getCurrentAmount() < this.getGoalAmount()) {
+            this.setCurrentAmount(Double.sum(this.getCurrentAmount(), donation));
+        }
+    }
+
+    public boolean isEnded() {
+        return this.getEndDate().isBefore(LocalDate.now());
+    }
+
+    public boolean isNoLongerActive() {
+        return !this.status.equals(Status.ACTIVE);
+    }
+
+    public List<Donation> getDonations() {
+        return CollectionUtils.isEmpty(this.donations) ? new ArrayList<>() : this.donations;
+    }
+
+    public List<Volunteer> getVolunteers() {
+        return CollectionUtils.isEmpty(this.volunteers) ? new ArrayList<>() : this.volunteers;
     }
 }

@@ -1,18 +1,21 @@
 package com.colaborapp.model.mapper.impl;
 
-import com.colaborapp.dto.ProjectInfoDTO;
-import com.colaborapp.dto.ProjectRequestDTO;
-import com.colaborapp.dto.ProjectResponseDTO;
-import com.colaborapp.dto.UserResponseDTO;
+import com.colaborapp.dto.*;
 import com.colaborapp.model.Project;
 import com.colaborapp.model.User;
 import com.colaborapp.model.mapper.ProjectMapper;
+import com.colaborapp.service.DonationService;
+import com.colaborapp.service.VolunteerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 
 @Component
+@RequiredArgsConstructor
 public class ProjectMapperImpl implements ProjectMapper {
+    private final DonationService donationService;
+    private final VolunteerService volunteerService;
 
     @Override
     public Project toEntity(ProjectRequestDTO dto) {
@@ -46,6 +49,15 @@ public class ProjectMapperImpl implements ProjectMapper {
                 .currentAmount(entity.getCurrentAmount())
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
+                .address(AddressResponseDTO.builder()
+                        .id(entity.getAddress().getId())
+                        .province(entity.getAddress().getProvince())
+                        .city(entity.getAddress().getCity())
+                        .street(entity.getAddress().getStreet())
+                        .number(entity.getAddress().getNumber())
+                        .build())
+                .donors(donationService.getProjectDonors(entity.getId()))
+                .volunteers(volunteerService.getProjectVolunteers(entity.getId()))
                 .build();
     }
 
@@ -62,6 +74,13 @@ public class ProjectMapperImpl implements ProjectMapper {
                 .currentAmount(entity.getCurrentAmount())
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
+                .address(AddressResponseDTO.builder()
+                        .id(entity.getAddress().getId())
+                        .province(entity.getAddress().getProvince())
+                        .city(entity.getAddress().getCity())
+                        .street(entity.getAddress().getStreet())
+                        .number(entity.getAddress().getNumber())
+                        .build())
                 .build();
     }
 }

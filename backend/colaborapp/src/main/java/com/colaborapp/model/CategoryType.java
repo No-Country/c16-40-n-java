@@ -1,6 +1,5 @@
 package com.colaborapp.model;
 
-import java.util.InputMismatchException;
 import java.util.Set;
 
 public enum CategoryType {
@@ -33,7 +32,7 @@ public enum CategoryType {
     public static CategoryType getCategoryTypeFromString(String value) {
         String categoryType = value.toUpperCase();
         if (!categories.contains(categoryType)) {
-            throw new InputMismatchException("Unknown Category Type: %s".formatted(value));
+            throw new IllegalArgumentException("Unknown Category Type: %s".formatted(value)); // TODO: catch me
         }
         return CategoryType.valueOf(categoryType);
     }

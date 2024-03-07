@@ -17,6 +17,7 @@ public record ProjectInfoDTO(
         Double goalAmount,
         Double currentAmount,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        AddressResponseDTO address
 ) {
 }

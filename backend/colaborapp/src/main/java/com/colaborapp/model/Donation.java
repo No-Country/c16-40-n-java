@@ -3,26 +3,28 @@ package com.colaborapp.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
 public class Donation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, name = "USER_ID")
-    private Long userId;
-    @Column(nullable = false, name = "PROJECT_ID")
-    private Long projectId;
+    @JoinColumn(nullable = false, name = "USER_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User donor;
+    @JoinColumn(nullable = false, name = "PROJECT_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Project project;
     @Column(nullable = false)
-    private Integer amount;
+    private Double amount;
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDateTime dateTime;
 }
