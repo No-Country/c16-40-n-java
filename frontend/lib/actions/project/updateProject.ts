@@ -3,12 +3,18 @@
 import { revalidatePath, revalidateTag } from 'next/cache';
 
 interface createProjectForm {
+  categoryType: string;
   title: string;
   description: string;
   image: string;
   goalAmount: number;
-  categoryType: string;
   endDate: string;
+  address: {
+    province: string;
+    city: string;
+    street?: string;
+    number?: number;
+  };
 }
 
 export async function updateProject(
