@@ -67,7 +67,7 @@ const ProvinceSelect = ({ form }: Props) => {
       render={({ field }) => (
         <FormItem className="flex-1">
           <FormLabel>Provincia</FormLabel>
-          <Select onValueChange={field.onChange}>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger className="border border-foreground bg-white rounded-sm">
                 <SelectValue

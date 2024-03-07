@@ -70,10 +70,10 @@ const EditForm = ({ project }: Props) => {
       categoryType: project.category,
       endDate: new Date(project.endDate),
       address: {
-        province: '',
-        city: '',
-        street: '',
-        number: undefined,
+        province: project.address.province,
+        city: project.address.city,
+        street: project.address.street,
+        number: project.address.number,
       },
     },
   });
