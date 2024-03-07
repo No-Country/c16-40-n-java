@@ -35,6 +35,12 @@ export async function updateProject(
         body: JSON.stringify({ ...formData }),
       }
     );
+
+    if (!response.ok) {
+      throw new Error(
+        `Error en la solicitud: ${response.status} ${response.statusText}`
+      );
+    }
     const result = await response.json();
     if (result) {
       revalidatePath('/(pages)/(main)/project/[id]', 'layout');

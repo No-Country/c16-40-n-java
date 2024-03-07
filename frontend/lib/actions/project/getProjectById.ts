@@ -36,6 +36,13 @@ export async function getProjectById(id: string) {
         'Content-Type': 'application/json',
       },
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `Error en la solicitud: ${response.status} ${response.statusText}`
+      );
+    }
+
     const result: project = await response.json();
     return result;
   } catch (error) {

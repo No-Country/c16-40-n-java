@@ -23,13 +23,19 @@ export async function donateToProject(
         body: JSON.stringify({ ...formData }),
       }
     );
+
+    if (!response.ok) {
+      throw new Error(
+        `Error en la solicitud: ${response.status} ${response.statusText}`
+      );
+    }
+
     const result = response;
     if (result.status === 201) {
       revalidatePath('/(pages)/(main)/project/[id]', 'layout');
       revalidateTag('allProjects');
-      return result;
     }
-    return null;
+    return result.status === 201;
   } catch (error) {
     console.log(error);
   }
