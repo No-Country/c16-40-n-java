@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import VolunteerSuccesfulDialog from './volunteerSuccesfulDialog';
 import { Textarea } from '@/components/ui/textarea';
+import { beVolunteerToProject } from '@/lib/actions/project/beVolunteerToProject';
 
 interface Props {
   project: project;
@@ -31,7 +32,7 @@ const formSchema = z.object({
   fullName: z
     .string()
     .min(4, { message: 'El nombre debe contener al menos 4 caracteres.' }),
-  phoneNumber: z
+  volunteerPhoneNumber: z
     .string()
     .min(10, { message: 'El numero ingresado es invalido' })
     .max(14, { message: 'El numero ingresado es invalido' }),
@@ -46,7 +47,7 @@ const VolunteerForm = ({ project }: Props) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: '',
-      phoneNumber: '',
+      volunteerPhoneNumber: '',
       email: '',
       details: '',
     },
@@ -59,7 +60,8 @@ const VolunteerForm = ({ project }: Props) => {
   const { token } = useAuth();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (values) {
+    const formResponse = await beVolunteerToProject(project.id, values, token!);
+    if (formResponse) {
       console.log('Exitoso');
       setOpen(true);
       return;
@@ -100,7 +102,7 @@ const VolunteerForm = ({ project }: Props) => {
           />
           <FormField
             control={form.control}
-            name="phoneNumber"
+            name="volunteerPhoneNumber"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel className="font-medium text-base">

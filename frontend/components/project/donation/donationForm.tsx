@@ -64,7 +64,6 @@ const DonationForm = ({ project }: Props) => {
     const formResponse = await donateToProject(project.id, values, token!);
     if (formResponse) {
       setOpen(true);
-      return;
     } else {
       return toast({
         variant: 'destructive',

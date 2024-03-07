@@ -2,25 +2,25 @@
 
 import { revalidatePath, revalidateTag } from 'next/cache';
 
-interface donationForm {
-  amount: number;
+interface volunteerForm {
+  volunteerPhoneNumber: string;
 }
 
-export async function donateToProject(
+export async function beVolunteerToProject(
   projectId: number,
-  formData: donationForm,
+  formData: volunteerForm,
   token: string
 ) {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/projects/donate/${projectId}`,
+      `${process.env.API_URL}/projects/users/volunteer`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ ...formData }),
+        body: JSON.stringify({ ...formData, projectId: projectId }),
       }
     );
     const result = response;
