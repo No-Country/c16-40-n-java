@@ -1,6 +1,5 @@
 'use client';
 
-import { deleteProject } from '@/lib/actions/project/deleteProject';
 import { Button } from '../../ui/button';
 import { useAuth } from '@/providers/authProvider';
 import { useEffect, useState } from 'react';

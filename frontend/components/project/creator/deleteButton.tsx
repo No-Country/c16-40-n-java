@@ -1,3 +1,4 @@
+'use client';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,6 +15,8 @@ import { useToast } from '@/components/ui/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { deleteProject } from '@/lib/actions/project/deleteProject';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Icons } from '@/components/icons';
 
 interface Props {
   projectId: number;
@@ -23,19 +26,21 @@ interface Props {
 const DeleteButton = ({ projectId, token }: Props) => {
   const { toast } = useToast();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleDeleteProject = async (projectId: number, token: string) => {
+    setIsLoading(true);
     const response = await deleteProject(projectId, token);
     if (response) {
       router.push(`/`);
-      return toast({
+      toast({
         className: 'bg-green-500 text-green-100',
         title: 'Todo salió bien!',
         description: 'Se dió de baja exitosamente el proyecto.',
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     } else {
-      return toast({
+      toast({
         variant: 'destructive',
         title: '¡Ups! Algo salió mal!',
         description:
@@ -43,16 +48,22 @@ const DeleteButton = ({ projectId, token }: Props) => {
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     }
+    setIsLoading(false);
   };
 
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
+          disabled={isLoading}
           className="border-2 border-destructive text-destructive lg:w-52 rounded-sm hover:bg-red-700 hover:text-white"
           variant={'secondary'}
         >
-          Dar de baja el proyecto
+          {isLoading ? (
+            <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
+          ) : (
+            'Dar de baja el proyecto'
+          )}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="w-[90%] rounded-lg bg-white px-14 pt-14">

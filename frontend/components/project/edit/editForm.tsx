@@ -28,6 +28,7 @@ import { useAuth } from '@/providers/authProvider';
 import { project } from '@/lib/actions/project/getProjectById';
 import { updateProject } from '@/lib/actions/project/updateProject';
 import ProvinceSelect from '@/components/new-project/provinceSelect';
+import { useState } from 'react';
 
 interface Props {
   project: project;
@@ -81,8 +82,10 @@ const EditForm = ({ project }: Props) => {
   const { toast } = useToast();
   const router = useRouter();
   const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const valuesFormated = {
       ...values,
       endDate: format(values.endDate, 'dd/MM/yyyy'),
@@ -90,14 +93,14 @@ const EditForm = ({ project }: Props) => {
     const projectData = await updateProject(valuesFormated, token!, project.id);
     if (projectData) {
       router.push(`/project/${projectData.id}`);
-      return toast({
+      toast({
         className: 'bg-green-500 text-green-100',
         title: 'Todo salió bien!',
         description: 'Se editó exitosamente el proyecto.',
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     } else {
-      return toast({
+      toast({
         variant: 'destructive',
         title: '¡Ups! Algo salió mal!',
         description:
@@ -105,6 +108,7 @@ const EditForm = ({ project }: Props) => {
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     }
+    setIsLoading(false);
   }
 
   return (
@@ -301,8 +305,16 @@ const EditForm = ({ project }: Props) => {
           >
             Cancelar
           </Button>
-          <Button type="submit" className="w-1/2 h-11 m-auto rounded-sm">
-            Guardar cambios
+          <Button
+            disabled={isLoading}
+            type="submit"
+            className="w-1/2 h-11 m-auto rounded-sm"
+          >
+            {isLoading ? (
+              <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
+            ) : (
+              'Guardar cambios'
+            )}
           </Button>
         </div>
       </form>

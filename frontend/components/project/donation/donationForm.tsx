@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import DonationSuccesfulDialog from '@/components/project/donation/donationSuccesfulDialog';
 import { useState } from 'react';
 import { donateToProject } from '@/lib/actions/project/donateToProject';
+import { Icons } from '@/components/icons';
 
 interface Props {
   project: project;
@@ -59,13 +60,15 @@ const DonationForm = ({ project }: Props) => {
   const { toast } = useToast();
   const router = useRouter();
   const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const formResponse = await donateToProject(project.id, values, token!);
     if (formResponse) {
       setOpen(true);
     } else {
-      return toast({
+      toast({
         variant: 'destructive',
         title: '¡Ups! Algo salió mal!',
         description:
@@ -73,6 +76,7 @@ const DonationForm = ({ project }: Props) => {
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     }
+    setIsLoading(false);
   }
 
   return (
@@ -132,8 +136,17 @@ const DonationForm = ({ project }: Props) => {
                 user: form.getValues('name') + ' ' + form.getValues('lastName'),
               }}
             />
-            <Button type="submit" className="w-1/2 h-11 m-auto rounded-sm">
-              Donar ahora
+
+            <Button
+              disabled={isLoading}
+              type="submit"
+              className="w-1/2 h-11 m-auto rounded-sm"
+            >
+              {isLoading ? (
+                <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
+              ) : (
+                'Donar ahora'
+              )}
             </Button>
           </div>
           <p className="pt-10">

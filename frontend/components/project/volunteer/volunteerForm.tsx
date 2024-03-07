@@ -23,6 +23,7 @@ import { useState } from 'react';
 import VolunteerSuccesfulDialog from './volunteerSuccesfulDialog';
 import { Textarea } from '@/components/ui/textarea';
 import { beVolunteerToProject } from '@/lib/actions/project/beVolunteerToProject';
+import { Icons } from '@/components/icons';
 
 interface Props {
   project: project;
@@ -58,15 +59,16 @@ const VolunteerForm = ({ project }: Props) => {
   const { toast } = useToast();
   const router = useRouter();
   const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const formResponse = await beVolunteerToProject(project.id, values, token!);
     if (formResponse) {
-      console.log('Exitoso');
       setOpen(true);
       return;
     } else {
-      return toast({
+      toast({
         variant: 'destructive',
         title: '¡Ups! Algo salió mal!',
         description:
@@ -74,6 +76,7 @@ const VolunteerForm = ({ project }: Props) => {
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     }
+    setIsLoading(false);
   }
 
   return (
@@ -169,8 +172,16 @@ const VolunteerForm = ({ project }: Props) => {
               Cancelar
             </Button>
             <VolunteerSuccesfulDialog open={open} setOpen={setOpen} />
-            <Button type="submit" className="w-1/2 h-11 m-auto rounded-sm">
-              Continuar
+            <Button
+              disabled={isLoading}
+              type="submit"
+              className="w-1/2 h-11 m-auto rounded-sm"
+            >
+              {isLoading ? (
+                <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
+              ) : (
+                'Continuar'
+              )}
             </Button>
           </div>
         </div>

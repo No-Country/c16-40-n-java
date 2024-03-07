@@ -27,6 +27,7 @@ import { es } from 'date-fns/locale';
 import { Icons } from '../icons';
 import { useAuth } from '@/providers/authProvider';
 import ProvinceSelect from './provinceSelect';
+import { useState } from 'react';
 
 const formSchema = z.object({
   title: z
@@ -76,8 +77,10 @@ const NewProjectForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const { token } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const valuesFormated = {
       ...values,
       endDate: format(values.endDate, 'dd/MM/yyyy'),
@@ -85,14 +88,14 @@ const NewProjectForm = () => {
     const projectData = await createProject(valuesFormated, token!);
     if (projectData) {
       router.push(`/project/${projectData.id}`);
-      return toast({
+      toast({
         className: 'bg-green-500 text-green-100',
         title: 'Todo salió bien!',
         description: 'Se creó exitosamente el proyecto.',
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     } else {
-      return toast({
+      toast({
         variant: 'destructive',
         title: '¡Ups! Algo salió mal!',
         description:
@@ -100,6 +103,7 @@ const NewProjectForm = () => {
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     }
+    setIsLoading(false);
   }
 
   return (
@@ -293,8 +297,16 @@ const NewProjectForm = () => {
           >
             Cancelar
           </Button>
-          <Button type="submit" className="w-1/2 h-11 m-auto rounded-sm">
-            Continuar
+          <Button
+            disabled={isLoading}
+            type="submit"
+            className="w-1/2 h-11 m-auto rounded-sm"
+          >
+            {isLoading ? (
+              <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
+            ) : (
+              'Continuar'
+            )}
           </Button>
         </div>
       </form>
