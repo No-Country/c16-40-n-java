@@ -63,8 +63,10 @@ const RegisterForm = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const confirmation = await register(values);
     if (confirmation) {
       router.push('/login');
@@ -84,6 +86,7 @@ const RegisterForm = () => {
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     }
+    setIsLoading(false);
   }
 
   return (
@@ -214,8 +217,16 @@ const RegisterForm = () => {
           )}
         />
         <div className="w-full flex items-center">
-          <Button type="submit" className="w-3/4 h-16 m-auto rounded-full">
-            REGISTRARSE
+          <Button
+            disabled={isLoading}
+            type="submit"
+            className="w-3/4 h-16 m-auto rounded-full"
+          >
+            {isLoading ? (
+              <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
+            ) : (
+              'REGISTRARSE'
+            )}{' '}
           </Button>
         </div>
       </form>

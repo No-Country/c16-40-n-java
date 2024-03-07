@@ -44,12 +44,14 @@ const LoginForm = () => {
   const router = useRouter();
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = (userData: LoginResponse) => {
     login(userData);
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const userData = await loginUser(values);
     if (userData?.email && userData?.token) {
       handleLogin(userData);
@@ -63,6 +65,7 @@ const LoginForm = () => {
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     }
+    setIsLoading(false);
   }
 
   return (
@@ -117,8 +120,16 @@ const LoginForm = () => {
           Olvidaste la contraseña?
         </p>
         <div className="w-full flex flex-col">
-          <Button type="submit" className="w-3/4 h-16 m-auto rounded-full">
-            INICIAR SESIÓN
+          <Button
+            disabled={isLoading}
+            type="submit"
+            className="w-3/4 h-16 m-auto rounded-full"
+          >
+            {isLoading ? (
+              <Icons.Spinner className="mr-2 h-8 w-8 animate-spin" />
+            ) : (
+              'INICIAR SESIÓN'
+            )}
           </Button>
           <div className="flex items-center space-x-2 py-5">
             <Checkbox id="terms" className="rounded-none" />
