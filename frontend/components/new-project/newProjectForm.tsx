@@ -26,6 +26,7 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Icons } from '../icons';
 import { useAuth } from '@/providers/authProvider';
+import ProvinceSelect from './provinceSelect';
 
 const formSchema = z.object({
   title: z
@@ -41,9 +42,12 @@ const formSchema = z.object({
     .number()
     .min(1000, { message: 'El monto mínimo es de 1.000 ARS' })
     .max(10000000, { message: 'El monto máximo es de 10.000.000 ARS' }),
-  province: z.string().optional(),
-  city: z.string().optional(),
-  street: z.string().optional(),
+  address: z.object({
+    province: z.string({ required_error: 'La provincia es requerida.' }),
+    city: z.string({ required_error: 'La ciudad es requerida.' }),
+    street: z.string().optional(),
+    number: z.coerce.number().optional(),
+  }),
   categoryType: z.string({ required_error: 'La categoría es requerida' }),
   endDate: z.date({
     required_error: 'La fecha de finalización es requerida.',
@@ -60,9 +64,12 @@ const NewProjectForm = () => {
       goalAmount: undefined,
       categoryType: undefined,
       endDate: undefined,
-      province: '',
-      city: '',
-      street: '',
+      address: {
+        province: '',
+        city: '',
+        street: '',
+        number: undefined,
+      },
     },
   });
 
@@ -143,10 +150,13 @@ const NewProjectForm = () => {
                   <div className="relative">
                     <Input
                       type="number"
-                      className="border border-foreground bg-white rounded-sm"
-                      placeholder="Monto a alcanzar"
+                      className="border border-foreground bg-white rounded-sm pl-8"
+                      placeholder="Indica el monto"
                       {...field}
                     />
+                    <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-sm leading-5 z-10 bg-white border border-t-foreground border-b-foreground border-r-transparent border-l-foreground rounded-l-sm">
+                      $
+                    </span>
                     <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 z-10 bg-white border border-t-foreground border-b-foreground border-l-transparent border-r-foreground rounded-r-sm">
                       ARS
                     </span>
@@ -173,29 +183,13 @@ const NewProjectForm = () => {
               </FormItem>
             )}
           />
-          <div className="flex justify-between gap-4 w-full">
+          <div className="flex gap-4 w-full">
+            <ProvinceSelect form={form} />
             <FormField
               control={form.control}
-              name="province"
+              name="address.city"
               render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Provincia*</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="border border-foreground bg-white rounded-sm"
-                      placeholder="Provincia"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="city"
-              render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="flex-1">
                   <FormLabel>Localidad*</FormLabel>
                   <FormControl>
                     <Input
@@ -209,23 +203,42 @@ const NewProjectForm = () => {
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="street"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Dirección</FormLabel>
-                <FormControl>
-                  <Input
-                    className="border border-foreground bg-white rounded-sm"
-                    placeholder="Dirección"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex gap-4">
+            <FormField
+              control={form.control}
+              name="address.street"
+              render={({ field }) => (
+                <FormItem className="lg:w-3/4">
+                  <FormLabel>Dirección</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="border border-foreground bg-white rounded-sm"
+                      placeholder="Dirección"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="address.number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Número</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="border border-foreground bg-white rounded-sm"
+                      placeholder="Número"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="endDate"

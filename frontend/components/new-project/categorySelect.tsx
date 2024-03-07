@@ -12,15 +12,18 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 interface Props {
   form: UseFormReturn<
     {
+      categoryType: string;
       title: string;
       description: string;
       image: string;
       goalAmount: number;
-      province?: string;
-      city?: string;
-      street?: string;
-      categoryType: string;
       endDate: Date;
+      address: {
+        province: string;
+        city: string;
+        street?: string | undefined;
+        number?: number | undefined;
+      };
     },
     any
   >;
