@@ -33,7 +33,10 @@ interface Props {
 
 const ProjectCard = ({ data }: Props) => {
   return (
-    <Link href={`/project/${data.id}`} className="flex flex-col h-full">
+    <Link
+      href={`/project/${data.id}`}
+      className="flex flex-col h-full animate-fade-in"
+    >
       <Card className="w-auto h-full bg-white text-foreground cursor-pointer">
         <CardHeader className="text-lg">
           <CardTitle className="text-lg">{data.title}</CardTitle>

@@ -1,4 +1,4 @@
-import ProjectsContainer from '@/components/home/ProjectsContainer';
+import ProjectsContainer from '@/components/projects/ProjectsContainer';
 import CreateNewProjectButton from './CreateNewProjectButton';
 
 const HomeContainer = () => {

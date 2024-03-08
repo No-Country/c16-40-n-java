@@ -9,35 +9,33 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Icons } from '../icons';
-import { getAllProjects } from '@/lib/actions/project/getAllProjects';
 import { useEffect, useState } from 'react';
 import { project } from '@/lib/actions/project/getProjectById';
 import { Skeleton } from '../ui/skeleton';
-import Loader from '../ui/loader';
+import { getProjectsByCategory } from '@/lib/actions/project/getProjectsByCategory';
 
 const ProjectsContainer = () => {
   const [projects, setProjects] = useState<project[] | undefined>(undefined);
-  const [filteredProjects, setFilteredProjects] = useState(projects);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getAllProjects();
+      const response = await getProjectsByCategory('ALL');
       setProjects(response);
-      setFilteredProjects(response);
       setIsLoading(false);
     }
     fetchData();
   }, []);
 
-  const handleFilter = (selectedCategory: string) => {
-    setFilteredProjects(
-      projects?.filter((project) => project.category === selectedCategory)
-    );
+  const handleFilter = async (selectedCategory: string) => {
+    setIsLoading(true);
+    const data = await getProjectsByCategory(selectedCategory);
+    setProjects(data);
+    setIsLoading(false);
   };
 
   return (
-    <section className="w-full flex flex-col pt-10">
+    <section className="w-full flex flex-col pt-10 p-5">
       <div className="pb-5">
         <h2 className="text-base lg:text-xl font-bold">
           Explora todos los proyectos
@@ -56,6 +54,12 @@ const ProjectsContainer = () => {
               <SelectValue placeholder="Recaudar fondos para" />
             </SelectTrigger>
             <SelectContent className="font-medium bg-primary text-primary-foreground border-0">
+              <SelectItem
+                className="text-primary-foreground cursor-pointer"
+                value="ALL"
+              >
+                Todos
+              </SelectItem>
               <SelectItem
                 className="text-primary-foreground cursor-pointer"
                 value="HEALTH"
@@ -91,18 +95,24 @@ const ProjectsContainer = () => {
         </div>
       </div>
       {isLoading ? (
-        <div className="flex items-center justify-center w-full min-h-64">
-          <Loader className="w-48 h-48" />
-        </div>
-      ) : filteredProjects && filteredProjects?.length >= 1 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
-          {filteredProjects?.map((data: any) => (
-            <ProjectCard key={data.id} data={data} />
-          ))}
+          <Skeleton className="w-full h-96" />
+          <Skeleton className="w-full h-96" />
+          <Skeleton className="w-full h-96" />
         </div>
       ) : (
-        <div className="flex items-center justify-center min-h-64">
-          <p>No se encontraron proyectos de la categoría seleccionada.</p>
+        <div>
+          {projects && projects.length >= 1 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
+              {projects.map((data: any) => (
+                <ProjectCard key={data.id} data={data} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center min-h-96">
+              <p>No se encontraron proyectos de la categoría seleccionada.</p>
+            </div>
+          )}
         </div>
       )}
     </section>
