@@ -100,19 +100,15 @@ const ProjectsContainer = () => {
           <Skeleton className="w-full h-96" />
           <Skeleton className="w-full h-96" />
         </div>
+      ) : projects && projects.length >= 1 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
+          {projects.map((data: any) => (
+            <ProjectCard key={data.id} data={data} />
+          ))}
+        </div>
       ) : (
-        <div>
-          {projects && projects.length >= 1 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-center">
-              {projects.map((data: any) => (
-                <ProjectCard key={data.id} data={data} />
-              ))}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center min-h-96">
-              <p>No se encontraron proyectos de la categoría seleccionada.</p>
-            </div>
-          )}
+        <div className="flex items-center justify-center min-h-96">
+          <p>No se encontraron proyectos de la categoría seleccionada.</p>
         </div>
       )}
     </section>
