@@ -1,5 +1,5 @@
-import ProjectsContainer from '@/components/projects/ProjectsContainer';
 import CreateNewProjectButton from './CreateNewProjectButton';
+import HomeProjectsContainer from './HomeProjectsContainer';
 
 const HomeContainer = () => {
   return (
@@ -13,7 +13,7 @@ const HomeContainer = () => {
           <CreateNewProjectButton />
         </section>
       </div>
-      <ProjectsContainer />
+      <HomeProjectsContainer />
     </section>
   );
 };
